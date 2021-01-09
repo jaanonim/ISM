@@ -1,0 +1,212 @@
+[
+   {
+      "title": "I.S.M.A.",
+      "color": "#3355ff",
+      "ip": "192.168.0.26",
+      "altip": "backend.ism.pagekite.me/isma",
+      "port": ":8000/isma",
+      "value": [
+         {
+            "field": "Time",
+            "name": "Czas:",
+            "type": "string"
+         },
+         {
+            "field": "Voltage",
+            "name": "Napięcie:",
+            "type": "vcc"
+         },
+         {
+            "field": "Temp",
+            "name": "Temperatura:",
+            "type": "temp"
+         },
+         {
+            "field": "karm",
+            "name": "Godzina karmienia:",
+            "type": "hour",
+            "formField": "ktime"
+         },
+         {
+            "field": "Karm",
+            "name": "Karmienie:",
+            "type": "action",
+            "onAddres": "/karm"
+         },
+         {
+            "field": "P1",
+            "name": "Przełącznik 1:",
+            "type": "object",
+            "value": [
+               {
+                  "field": "on",
+                  "name": "Czas włączenia:",
+                  "type": "hour",
+                  "formField": "p1timeS"
+               },
+               {
+                  "field": "off",
+                  "name": "Czas wyłączenia:",
+                  "type": "hour",
+                  "formField": "p1timeE"
+               },
+               {
+                  "field": "status",
+                  "name": "Status:",
+                  "type": "bool",
+                  "onAddres": "/onp1",
+                  "offAddres": "/offp1"
+               }
+            ]
+         },
+         {
+            "field": "P2",
+            "name": "Przełącznik 2:",
+            "type": "object",
+            "value": [
+               {
+                  "field": "on",
+                  "name": "Czas włączenia:",
+                  "type": "hour",
+                  "formField": "p2timeS"
+               },
+               {
+                  "field": "off",
+                  "name": "Czas wyłączenia:",
+                  "type": "hour",
+                  "formField": "p2timeE"
+               },
+               {
+                  "field": "status",
+                  "name": "Status:",
+                  "type": "bool",
+                  "onAddres": "/onp2",
+                  "offAddres": "/offp2"
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "title": "I.S.M.P.",
+      "color": "#33ff55",
+      "ip": "192.168.0.26",
+      "altip": "backend.ism.pagekite.me/ismp",
+      "port": ":8000/ismp",
+      "value": [
+         {
+            "field": "Time",
+            "name": "Czas:",
+            "type": "string"
+         },
+         {
+            "field": "Voltage",
+            "name": "Napięcie:",
+            "type": "vcc"
+         },
+         {
+            "field": "Temp_in",
+            "name": "Temperatura wewnątrz:",
+            "type": "temp"
+         },
+         {
+            "field": "Temp_out",
+            "name": "Temperatura na zewnątrz:",
+            "type": "temp"
+         },
+         {
+            "field": "Reset",
+            "name": "Godzina Resetu:",
+            "type": "hour",
+            "formField": "rtime"
+         },
+         {
+            "field": "Alarm",
+            "name": "Alarm:",
+            "type": "object",
+            "value": [
+               {
+                  "field": "time",
+                  "name": "Czas trwania alarmu:",
+                  "type": "number",
+                  "formField": "lena"
+               },
+               {
+                  "field": "status",
+                  "name": "Status:",
+                  "type": "bool",
+                  "onAddres": "/on",
+                  "offAddres": "/off"
+               }
+            ]
+         },
+         {
+            "field": "Polewanie",
+            "name": "Podlewanie:",
+            "type": "object",
+            "value": [
+               {
+                  "field": "loop",
+                  "name": "Polewaj co:",
+                  "type": "number",
+                  "formField": "fn"
+               },
+               {
+                  "field": "left",
+                  "name": "Pozostało:",
+                  "type": "number"
+               },
+               {
+                  "field": "hour",
+                  "name": "Godzina podlewania:",
+                  "type": "hour",
+                  "formField": "ptime"
+               },
+               {
+                  "field": "time",
+                  "name": "Czas podlewania:",
+                  "type": "number",
+                  "formField": "len"
+               },
+               {
+                  "field": "status",
+                  "name": "Status:",
+                  "type": "bool",
+                  "onAddres": "/onp",
+                  "offAddres": "/offp"
+               },
+               {
+                  "field": "Podlej",
+                  "name": "Podlewanie:",
+                  "type": "action",
+                  "onAddres": "/podlej"
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "title": "I.S.M.",
+      "color": "#ffffff",
+      "ip": "192.168.0.26",
+      "altip": "backend.ism.pagekite.me",
+      "port": ":8000",
+      "value": [
+         {
+            "field": "temp",
+            "name": "Temperatura CPU:",
+            "type": "temp"
+         },
+         {
+            "field": "isma",
+            "name": "ISMA:",
+            "type": "string"
+         },
+         {
+            "field": "ismp",
+            "name": "ISMP:",
+            "type": "string"
+         }
+      ]
+   }
+]

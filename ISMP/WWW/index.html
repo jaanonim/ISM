@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+
+    <meta charset="utf-8">
+    <title>I.S.M.P.</title>
+
+    <meta http-equiv="X-Ua-Compatible" content="IE=edge,chrome=1">
+
+    <!--[if lt IE 9]>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+	<![endif]-->
+    <style>
+        body {
+            background-color: #444;
+            color: #fff;
+            font-size: 20px;
+        }
+
+        h2 {
+            color: #fff;
+            font-size: 22px;
+            padding 10px;
+        }
+
+        a {
+            Color: #ffae0d;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        input {
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            color: #fff;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        input[type=submit] {
+
+            width: 200px;
+            height: 40px;
+            font-size: 20px;
+            border: 2px solid #ffcf2f;
+            background-color: #ffae0d;
+            border-radius: 5px;
+        }
+
+
+        input[type=time] {
+            width: 90px;
+            height: 20px;
+            font-size: 18px;
+            border: 2px solid #ffcf2f;
+            background-color: #ffae0d;
+            border-radius: 5px;
+        }
+
+        input[type=number] {
+            width: 70px;
+            height: 20px;
+            font-size: 18px;
+            border: 2px solid #ffcf2f;
+            background-color: #ffae0d;
+            border-radius: 5px;
+        }
+
+        input[type=number]:hover {
+            border: 2px solid #ffcf2f;
+            background-color: #ee9d0c;
+        }
+
+        input[type=time]:hover {
+            border: 2px solid #ffcf2f;
+            background-color: #ee9d0c;
+        }
+
+
+        input[type=submit]:hover {
+            border: 2px solid #ffcf2f;
+            background-color: #ee9d0c;
+        }
+
+        .logo {
+            background-color: #666;
+            text-align: center;
+            font-size: 30px;
+            padding: 25px;
+            width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .infoBar {
+            font-size: 18px;
+            text-align: center;
+            background-color: #ffbe1e;
+            padding: 10px;
+            min-width: 1050px;
+
+        }
+
+        .infoCointenr {
+            margin-left: auto;
+            margin-right: auto;
+            width: 1000px;
+            padding: 0 25px 0 25px;
+
+        }
+
+        .info {
+            float: left;
+            width: 220px;
+            padding: 10px;
+            background-color: #ffae0d;
+            margin: 2px 5px 2px 5px;
+            border-radius: 5px;
+
+        }
+
+        .conteiner {
+            background-color: #555;
+            text-align: center;
+            padding: 25px;
+            width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .footer {
+            font-size: 14px;
+            background-color: #333;
+            text-align: center;
+            padding: 10px;
+            width: 1030px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .content {
+            background-color: #666;
+            padding: 10px;
+            width: 980px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 10px;
+            margin: 10px 0 10px 0;
+
+        }
+
+        .left {
+            float: left;
+            padding: 10px;
+            width: 310px;
+            margin: 5px;
+            height: 90px;
+
+        }
+
+        .right {
+            float: left;
+            padding: 10px;
+            width: 610px;
+            min-height: 90px;
+            margin: 3px;
+            border-width: 0 0 0 2px;
+            border-color: #fff;
+            border-style: solid;
+
+        }
+
+        .on {
+            width: 34px;
+            height: 20px;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: green;
+            border-radius: 5px;
+        }
+
+        .off {
+            width: 34px;
+            height: 20px;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: red;
+            border-radius: 5px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <div class="logo">
+        I.S.M.P.<br>
+        <spam style="font-size: 22px">Inteligentny System Zarządzania Roślinami</spam>
+    </div>
+    <div class="infoBar">
+        <div class="infoCointenr">
+            <div class="info"> Witamy! </div>
+            <div class="info"> Alarm: @ </div>
+            <div class="info"> Napięcie: @V </div>
+            <div class="info"> Godzina: @ </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+
+    <div class="conteiner">
+
+        <div class="content">
+            <div class="left">
+                <h2>Alarm:</h2>
+                <div class="on"></div>
+            </div>
+            <div class="right">
+                <a href="/on">on</a> / <a href="/off">off</a>
+				<br>
+				Czas alarmu: @
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <div class="content">
+            <div class="left">
+                <h2>Temperatura:</h2>
+            </div>
+            <div class="right">
+                </br>
+                Wewnątrz: @ </br>
+                Na zewnątrz: @
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <div class="content">
+            <div class="left">
+                <h2>Podlewanie:</h2>
+            </div>
+            <div class="right">
+                O gdzinie: @
+                <br>
+                Co @ dni.
+                <br>
+                Czas podlewania: @
+                <br><br>
+
+                <a href="/podlej">Podlej</a>
+
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+		
+		<div class="content">
+            <div class="left">
+                <h2>Restart:</h2>
+            </div>
+            <div class="right">
+                </br>
+                Koniec dnia o godzinie: @ 
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+
+        <div class="content">
+            <form action="/settime"><input type="submit" value="Zmień Wartości"></form>
+        </div>
+
+        <!-- ----------------------------------------- -->
+
+        <form action="/time">
+
+            <div class="content">
+                <div class="left">
+                    <h2>Podlewanie:</h2>
+                </div>
+                <div class="right">
+                    O godzinie:<input type="time" name="time" value="@">
+                    <br>
+                    Powtarzaj co:<input type="number" name="fn" value="@">
+                    <br>
+                    Czas podlewania:<input type="number" name="len" value="@">
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+
+            <div class="content">
+                <div class="left">
+                    <h2>Restart:</h2>
+                </div>
+                <div class="right">
+                    <br>
+                    <input type="time" name="time" value="@">
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+
+            <div class="content">
+                <div class="left">
+                    <h2>Alarm:</h2>
+                </div>
+                <div class="right">
+                    <br>
+                    Długość alarmu:<input type="number" name="fn" value="@"> (ms)
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+
+            <div class="content">
+                <input type="submit" value="Zapisz">
+            </div>
+        </form>
+
+    </div>
+
+    <div class="footer">
+        I.S.M.P.&copy; 2019 <br>
+        <spam style="font-size: 12px"><br>Intelligent System Managmet Plants |
+            Inteligentny System Zarządzania Roślinami</spam>
+    </div>
+</body>
+
+</html>
