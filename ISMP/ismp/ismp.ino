@@ -487,10 +487,10 @@ void SaveAllTimes()
   SaveTime(rTime,2);
   SaveTime(pTime,6);
   SaveInt(leftDays,10);
-  SaveInt(len,14);
   SaveInt(fn,18);
   SaveInt(lenA,22);
   SaveBool(alarmIsAble,26);
+  SaveInt(len, 32);
   EEPROM.commit();
   Serial.println(LogValues());
   //adrres conunt = 13 ; end addres = 12
@@ -572,10 +572,10 @@ void ReadAllTimes()
   rTime=ReadTime(2);
   pTime=ReadTime(6);
   leftDays=ReadInt(10);
-  len=ReadInt(14);
   fn=ReadInt(18);
   lenA=ReadInt(22);
   alarmIsAble=ReadBool(26);
+  len = ReadInt(32);
   Serial.println(LogValues());
 }
 
