@@ -1,4 +1,5 @@
 import requests
+from data import Data
 from flask import Flask, render_template, jsonify, request, Response
 from flask_cors import CORS
 from gpiozero import CPUTemperature
@@ -15,12 +16,9 @@ class User(object):
     def __str__(self):
         return "User(id='%s')" % self.id
 
-users = [
-    User(1, 'admin', 'admin'),
-]
 
-username_table = {u.username: u for u in users}
-userid_table = {u.id: u for u in users}
+username_table = {u.username: u for u in Data.users}
+userid_table = {u.id: u for u in Data.users}
 
 def authenticate(username, password):
     user = username_table.get(username, None)
