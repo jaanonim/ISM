@@ -2,9 +2,7 @@
    {
       "title": "I.S.M.A.",
       "color": "#3355ff",
-      "ip": "192.168.0.26",
-      "altip": "backend.ism.pagekite.me/isma",
-      "port": ":8000/isma",
+      "endpoint": "/api/isma",
       "value": [
          {
             "field": "Time",
@@ -78,9 +76,7 @@
    {
       "title": "I.S.M.P.",
       "color": "#33ff55",
-      "ip": "192.168.0.26",
-      "altip": "backend.ism.pagekite.me/ismp",
-      "port": ":8000/ismp",
+      "endpoint": "/api/ismp",
       "value": [
          {
             "field": "Time",
@@ -176,9 +172,7 @@
    {
       "title": "I.S.M.",
       "color": "#ffffff",
-      "ip": "192.168.0.26",
-      "altip": "backend.ism.pagekite.me",
-      "port": ":8000",
+      "endpoint": "/api",
       "value": [
          {
             "field": "temp",

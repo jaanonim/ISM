@@ -1,10 +1,21 @@
 <template>
   <div>
-    {{item.name}}
-    <div class="value valueBg" v-if="item.type === 'string' || item.type === 'hour' || item.type === 'number'">{{value}}</div>
-    <div class="value valueBg" v-if="item.type === 'vcc'">{{value}} V</div>
-    <div class="value valueBg" v-if="item.type === 'temp'">{{value}} &deg;C</div>
-    <div class="value" v-if="item.type === 'action'"><button @click="action">{{item.field}}</button></div>
+    {{ item.name }}
+    <div
+      class="value valueBg"
+      v-if="
+        item.type === 'string' || item.type === 'hour' || item.type === 'number'
+      "
+    >
+      {{ value }}
+    </div>
+    <div class="value valueBg" v-if="item.type === 'vcc'">{{ value }} V</div>
+    <div class="value valueBg" v-if="item.type === 'temp'">
+      {{ value }} &deg;C
+    </div>
+    <div class="value" v-if="item.type === 'action'">
+      <button @click="action">{{ item.field }}</button>
+    </div>
     <div class="value" v-if="item.type === 'bool'">
       <label class="switch">
         <input type="checkbox" :checked="value" @click="checkbox" />
@@ -13,7 +24,12 @@
     </div>
     <div class="obj value" v-if="item.type === 'object'">
       <div v-for="item2 in item.value" :key="item2.field">
-        <ValueField :ip="ip" :item="item2" :value="value[item2.field]" :altip="altip" :token="token" :port="port"/>
+        <ValueField
+          :endpoint="endpoint"
+          :item="item2"
+          :value="value[item2.field]"
+          :token="token"
+        />
       </div>
     </div>
   </div>
@@ -24,37 +40,44 @@ import axios from "axios";
 
 export default {
   name: "ValueField",
-  props: ["item", "value", "ip", "port", "altip", "token"],
+  props: ["item", "value", "endpoint", "token"],
   methods: {
     async checkbox() {
       if (this.value) {
         this.value = false;
         try {
-          await axios.get("http://" + this.ip + this.port + this.item.offAddres,{headers: {Authorization: "JWT " + this.token}})
-        }
-        catch(e)
-        {
-          axios.get("http://" + this.altip + this.item.offAddres,{headers: {Authorization: "JWT " + this.token}})
+          await axios.get(
+            window.location.origin + this.endpoint + this.item.offAddres,
+            { headers: { Authorization: "JWT " + this.token } }
+          );
+        } catch (e) {
+          console.log(e);
         }
       } else {
         this.value = true;
         try {
-          await axios.get("http://" + this.ip + this.port + this.item.onAddres,{headers: {Authorization: "JWT " + this.token}})
-        }
-        catch(e){
-          axios.get("http://" + this.altip + this.item.onAddres,{headers: {Authorization: "JWT " + this.token}})
+          await axios.get(
+            window.location.origin + this.endpoint + this.item.onAddres,
+            { headers: { Authorization: "JWT " + this.token } }
+          );
+        } catch (e) {
+          console.log(e);
         }
       }
     },
-    async action(){
+    async action() {
       try {
-        await axios.get("http://" + this.ip + this.port + this.item.onAddres,{headers: {Authorization: "JWT " + this.token}})
+        await axios.get(
+          window.location.origin + this.endpoint + this.item.onAddres,
+          {
+            headers: { Authorization: "JWT " + this.token },
+          }
+        );
+      } catch (e) {
+        console.log(e);
       }
-      catch(e){
-        axios.get("http://" + this.altip + this.item.onAddres,{headers: {Authorization: "JWT " + this.token}})
-      }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -66,7 +89,7 @@ export default {
   vertical-align: middle;
 }
 
-.value button{
+.value button {
   margin: 0 !important;
 }
 

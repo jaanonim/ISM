@@ -17,25 +17,25 @@ import axios from "axios";
 import InputField from "./InputField.vue";
 
 export default {
-  props: ["block", "data","token"],
+  props: ["block", "data", "token"],
   components: {
-    InputField
+    InputField,
   },
   computed: {
-    boxColor: function() {
+    boxColor: function () {
       return {
-        "--border-color": this.block.color
+        "--border-color": this.block.color,
       };
     },
     inputs() {
       const a = [];
-      this.block.value.forEach(element => {
+      this.block.value.forEach((element) => {
         if (!(element.formField === undefined) || element.type === "object") {
           a.push(element);
         }
       });
       return a;
-    }
+    },
   },
   methods: {
     async save() {
@@ -48,29 +48,20 @@ export default {
       try {
         await axios({
           method: "get",
-          url: "http://" + this.block.ip + this.block.port + "/api/time",
+          url: window.location.origin + this.block.endpoint + "/api/time",
           params: JSON.parse(request),
-          headers: {Authorization: "JWT " + this.token}
-        }).then(response => (this.info = response.data))
-        .finally(()=>this.$emit("update"));
+          headers: { Authorization: "JWT " + this.token },
+        })
+          .then((response) => (this.info = response.data))
+          .finally(() => this.$emit("update"));
       } catch (e) {
-        try {
-          await axios({
-              method: "get",
-              url: "http://" + this.block.altip + "/api/time",
-              params: JSON.parse(request),
-              headers: {Authorization: "JWT " + this.token}
-            }).then(response => (this.info = response.data))
-            .finally(()=>this.$emit("update"));
-          } catch (e) {
-            console.error(e);
-            this.$emit("popup", e);
-            return;
-          }
+        console.error(e);
+        this.$emit("popup", e);
+        return;
       }
       this.$emit("popup", "");
-    }
-  }
+    },
+  },
 };
 </script>
 

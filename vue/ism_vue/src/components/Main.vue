@@ -26,13 +26,13 @@
         :isInactive="isInactive"
         :token="token"
         ref="block3"
-        v-if="page===0"
+        v-if="page === 0"
       />
       <localSettings
         @popup="popup"
         @setInactive="setInactive"
         @setUpdate="setUpdate"
-        v-if="page===1"
+        v-if="page === 1"
       ></localSettings>
     </div>
     <popup :text="popupText" :style="popupColorF"></popup>
@@ -101,7 +101,7 @@ export default {
       try {
         await axios
           .post(
-            "http://" + this.blocks[2].ip + this.blocks[2].port + "/auth",
+            window.location.origin + this.blocks[2].endpoint + "/auth",
             {
               username: v.username,
               password: v.password,
@@ -110,26 +110,13 @@ export default {
           )
           .then((response) => (this.token = response.data["access_token"]));
       } catch (e) {
-        try {
-          await axios
-            .post(
-              "http://" + this.blocks[2].altip + "/auth",
-              {
-                username: v.username,
-                password: v.password,
-              },
-              { headers: { "Content-Type": "application/json" } }
-            )
-            .then((response) => (this.token = response.data["access_token"]));
-        } catch (e) {
-          this.active = true;
-          this.popupText = e;
-          this.popupColor = "rgba(255,0,0,0.75)";
-          setTimeout(() => {
-            this.active = false;
-          }, 2000);
-          return;
-        }
+        this.active = true;
+        this.popupText = e;
+        this.popupColor = "rgba(255,0,0,0.75)";
+        setTimeout(() => {
+          this.active = false;
+        }, 2000);
+        return;
       }
       this.active = true;
       this.popupText = "Zalogowao!";

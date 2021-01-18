@@ -6,17 +6,6 @@ from gpiozero import CPUTemperature
 from flask_jwt import JWT, jwt_required, current_identity
 from werkzeug.security import safe_str_cmp
 
-
-class User(object):
-    def __init__(self, id, username, password):
-        self.id = id
-        self.username = username
-        self.password = password
-
-    def __str__(self):
-        return "User(id='%s')" % self.id
-
-
 username_table = {u.username: u for u in Data.users}
 userid_table = {u.id: u for u in Data.users}
 
@@ -68,7 +57,6 @@ def ISMP():
 @app.route('/isma')
 def ISMA():
 	return redirect(isma, code=302)
-
 
 if __name__ == '__main__':
     app.run()

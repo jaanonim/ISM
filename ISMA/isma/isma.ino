@@ -6,6 +6,7 @@ ADC_MODE(ADC_VCC);
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
+#include <ESP_Mail_Client.h>
 
 #include <OneWire.h>
 #include <DallasTemperature.h>
@@ -13,10 +14,20 @@ ADC_MODE(ADC_VCC);
 #include <EEPROM.h>
 
 Servo myservo;  
+SMTPSession smtp;
+
 /*
 const char *ssid     = "AndroidAP";
 const char *password = "";
 */
+
+#define SMTP_HOST "smtp.gmail.com"
+
+#define SMTP_PORT 587
+
+#define AUTHOR_EMAIL "randomtestmail2@gmail.com"
+#define AUTHOR_PASSWORD "fajnehaslo"
+
 
 const char *ssid     = "PGM";
 const char *password = "Psalm121";
@@ -483,6 +494,48 @@ String ReadTime(int addr)
     return s;
 }
 
+void sendEmail() {
+    ESP_Mail_Session session;
+
+    session.server.host_name = SMTP_HOST;
+    session.server.port = SMTP_PORT;
+    session.login.email = AUTHOR_EMAIL;
+    session.login.password = AUTHOR_PASSWORD;
+
+    SMTP_Message message;
+
+    message.sender.name = "ESP Mail";
+    message.sender.email = AUTHOR_EMAIL;
+    message.subject = "Test sending plain text Email";
+    message.addRecipient("Someone", "mat5mro@gmail.com");
+
+    message.text.content = "This is simple plain text message";
+
+    message.response.notify = esp_mail_smtp_notify_success | esp_mail_smtp_notify_failure | esp_mail_smtp_notify_delay;
+
+    if (!smtp.connect(&session))
+        return;
+
+    if (!MailClient.sendMail(&smtp, &message))
+        Serial.println("Error sending Email, " + smtp.errorReason());
+
+    smtp.closeSession();
+}
+
+void smtpCallback(SMTP_Status status)
+{
+    if (status.success())
+    {
+        Serial.print("OK");
+    }
+    else
+    {
+        Serial.print("ERROR");
+    }
+
+}
+
+
 //----------------------------------------------------------------
 
 void setup(){
@@ -596,6 +649,12 @@ void setup(){
   Serial.println(WiFi.localIP());
   digitalWrite(led, 1);
 
+  //SMTP
+  digitalWrite(led, 0);
+  Serial.print("SMTP setup: ");
+  smtp.debug(0);
+  smtp.callback(smtpCallback);
+  digitalWrite(led, 1);
 
   //Server
   digitalWrite(led, 0);

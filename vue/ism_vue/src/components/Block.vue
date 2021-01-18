@@ -3,14 +3,12 @@
     <div class="left">
       <div class="leftBorder">
         <div class="space">
-          <h3>{{block.title}}</h3>
+          <h3>{{ block.title }}</h3>
           <br />Status:
-          <div class="status" :class="{on: status, loading: loading}"></div>
-          <br />
-          IP: {{block.ip}}
+          <div class="status" :class="{ on: status, loading: loading }"></div>
           <br />
           <button @click="getData">Sych</button>
-          <p style="color: #ff0000">{{error}}</p>
+          <p style="color: #ff0000">{{ error }}</p>
         </div>
       </div>
     </div>
@@ -18,9 +16,14 @@
       <div class="space">
         <p v-if="!isSet">Dane nie są dostepne.</p>
         <div v-else>
-          <mainSite v-if="page===0" :block="block" :data="data" :token="token"></mainSite>
+          <mainSite
+            v-if="page === 0"
+            :block="block"
+            :data="data"
+            :token="token"
+          ></mainSite>
           <TimerSettings
-            v-if="page==1"
+            v-if="page == 1"
             :block="block"
             :data="data"
             :token="token"
@@ -43,7 +46,7 @@ export default {
   props: ["block", "page", "isInactive", "token"],
   components: {
     TimerSettings,
-    mainSite
+    mainSite,
   },
   data() {
     return {
@@ -53,10 +56,10 @@ export default {
       loading: false,
       isSet: false,
       data: undefined,
-      error: ""
+      error: "",
     };
   },
-  mounted: function() {
+  mounted: function () {
     this.update();
     if (this.updateTime == null) {
       this.updateTime = 60;
@@ -64,11 +67,11 @@ export default {
     }
   },
   computed: {
-    boxColor: function() {
+    boxColor: function () {
       return {
-        "border-color": this.block.color
+        "border-color": this.block.color,
       };
-    }
+    },
   },
   methods: {
     async getData() {
@@ -76,8 +79,10 @@ export default {
       this.loading = true;
       try {
         const res = await axios
-          .get("http://" + this.block.ip + this.block.port + "/api",{headers: {Authorization: "JWT " + this.token, "Access-Control-Allow-Origin": "*"}})
-          .then(response => (this.info = response.data))
+          .get(window.location.origin + this.block.endpoint + "/api", {
+            headers: { Authorization: "JWT " + this.token },
+          })
+          .then((response) => (this.info = response.data))
           .finally(() => (this.loading = false));
 
         this.data = res;
@@ -85,24 +90,10 @@ export default {
         this.isSet = true;
         this.status = true;
       } catch (e) {
-        this.loading = true;
-        try {
-        const res = await axios
-          .get("http://" + this.block.altip + "/api",{headers: {Authorization: "JWT " + this.token}
-            })
-          .then(response => (this.info = response.data))
-          .finally(() => (this.loading = false));
-
-        this.data = res;
-        this.error = "";
-        this.isSet = true;
-        this.status = true;
-        } catch (e) {
-          this.error = e;
-          this.status = false;
-          this.isSet = false;
-          this.loading = false;
-        }
+        this.error = e;
+        this.status = false;
+        this.isSet = false;
+        this.loading = false;
       }
     },
     update() {
@@ -119,8 +110,8 @@ export default {
     },
     popup(v) {
       this.$emit("popup", v);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -146,7 +137,7 @@ export default {
 }
 
 @media only screen and (min-width: 601px) {
-  .Block{
+  .Block {
     display: flex;
   }
 
@@ -166,7 +157,7 @@ export default {
 }
 
 @media only screen and (max-width: 600px) {
-  .Block{
+  .Block {
     display: block;
   }
 

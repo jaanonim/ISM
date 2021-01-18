@@ -29,21 +29,20 @@
 <script>
 export default {
   methods: {
-    closeSidebarPanel(){
-      this.$emit('hide')
+    closeSidebarPanel() {
+      this.$emit("hide");
     },
-    changePage(i)
-    {
-      this.$emit('changePage',i)
+    changePage(i) {
+      this.$emit("changePage", i);
     },
-    newPage(v){
-      window.open("http://"+v.ip+v.port,"_blank");
+    newPage(v) {
+      window.open("http://" + v.endpoint, "_blank");
     },
-    changeTheam(){
-      this.$emit("changeTheam")
-    }
+    changeTheam() {
+      this.$emit("changeTheam");
+    },
   },
-  props: ['isNavBar','blocks']
+  props: ["isNavBar", "blocks"],
 };
 </script>
 
@@ -77,7 +76,7 @@ ul.sidebar-panel-nav {
   list-style-type: none;
 }
 
-ul.sidebar-panel-nav a{
+ul.sidebar-panel-nav a {
   border-radius: 10px;
   margin: 10px;
   text-align: center;
@@ -89,13 +88,12 @@ ul.sidebar-panel-nav a{
   transition: transform 0.2s ease-in-out;
 }
 
-ul.sidebar-panel-nav > li > a > ol
-{
+ul.sidebar-panel-nav > li > a > ol {
   padding: 0 !important;
-	list-style-type: none;
-	padding: 0;
-	margin: 0;
-	display: none;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: none;
 }
 
 ul.sidebar-panel-nav a {
@@ -103,25 +101,22 @@ ul.sidebar-panel-nav a {
   cursor: pointer;
 }
 
-ul.sidebar-panel-nav ol a
-{
+ul.sidebar-panel-nav ol a {
   background-color: var(--detali2-color);
 }
 
-ul.sidebar-panel-nav > li:hover > a > ol
-{
-	display: block;
+ul.sidebar-panel-nav > li:hover > a > ol {
+  display: block;
 }
 
-ul.sidebar-panel-nav a:hover{
+ul.sidebar-panel-nav a:hover {
   transform: scale(1.05);
   background-color: var(--presed-color);
 }
 
-ul.sidebar-panel-nav ol a:hover
-{
+ul.sidebar-panel-nav ol a:hover {
   transform: scale(1.05);
-	background-color: var(--presed2-color);
+  background-color: var(--presed2-color);
 }
 
 .footer {
