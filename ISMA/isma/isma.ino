@@ -12,20 +12,18 @@ ADC_MODE(ADC_VCC);
 #include <Servo.h>
 #include <EEPROM.h>
 
-Servo myservo;
-
+#include "creds.h"
 /*
 const char *ssid     = "AndroidAP";
 const char *password = "";
 */
 
-const char *ssid = "PGM";
-const char *password = "Psalm121";
-
 IPAddress staticIP(192, 168, 0, 11); //ESP static ip
 IPAddress gateway(192, 168, 0, 1);   //IP Address of your WiFi Router (Gateway)
 IPAddress subnet(255, 255, 255, 0);  //Subnet mask
 IPAddress dns(8, 8, 8, 8);           //DNS
+
+Servo myservo;
 
 int led = 16; //D0
 

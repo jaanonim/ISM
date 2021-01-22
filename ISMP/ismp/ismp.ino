@@ -11,15 +11,13 @@ ADC_MODE(ADC_VCC);
 #include <DallasTemperature.h>
 #include <EEPROM.h>
 
+#include "creds.h"
 /*
 const char *ssid     = "AndroidAP";
 const char *password = "";
 */
 
-const char *ssid = "PGM";
-const char *password = "Psalm121";
-
-IPAddress staticIP(192, 168, 0, 11); //ESP static ip
+IPAddress staticIP(192, 168, 0, 15); //ESP static ip
 IPAddress gateway(192, 168, 0, 1);   //IP Address of your WiFi Router (Gateway)
 IPAddress subnet(255, 255, 255, 0);  //Subnet mask
 IPAddress dns(8, 8, 8, 8);           //DNS

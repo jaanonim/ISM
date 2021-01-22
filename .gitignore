@@ -484,6 +484,7 @@ vue/server/data.py
 vue/server/env-wsl
 vue/ism_vue/dist.zip
 
+**creds.h
 
 .vscode/*
 !.vscode/settings.json
