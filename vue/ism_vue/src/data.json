@@ -63,6 +63,18 @@
             "type": "object",
             "value": [
                {
+                  "field": "on",
+                  "name": "Czas włączenia:",
+                  "type": "hour",
+                  "formField": "p2timeS"
+               },
+               {
+                  "field": "off",
+                  "name": "Czas wyłączenia:",
+                  "type": "hour",
+                  "formField": "p2timeE"
+               },
+               {
                   "field": "status",
                   "name": "Status:",
                   "type": "bool",
