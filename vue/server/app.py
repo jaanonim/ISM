@@ -19,7 +19,8 @@ def identity(payload):
     return userid_table.get(user_id, None)
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'super-secret'
+app.config['SECRET_KEY'] = Data.secretKey
+app.config['JWT_EXPIRATION_DELTA'] = datetime.timedelta(days=7)
 
 CORS(app)
 jwt = JWT(app, authenticate, identity)

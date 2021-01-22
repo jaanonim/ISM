@@ -22,6 +22,11 @@ const char *password = "";
 const char *ssid = "PGM";
 const char *password = "Psalm121";
 
+IPAddress staticIP(192, 168, 0, 11); //ESP static ip
+IPAddress gateway(192, 168, 0, 1);   //IP Address of your WiFi Router (Gateway)
+IPAddress subnet(255, 255, 255, 0);  //Subnet mask
+IPAddress dns(8, 8, 8, 8);           //DNS
+
 int led = 16; //D0
 
 int p1 = 14;     //D5
@@ -535,6 +540,7 @@ void setup()
 
   //WiFi
   WiFi.mode(WIFI_STA);
+  WiFi.config(staticIP, subnet, gateway, dns);
 
   Serial.print("WiFi Initialize...");
   digitalWrite(led, 0);
