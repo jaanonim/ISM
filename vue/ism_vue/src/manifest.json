@@ -1,7 +1,7 @@
 {
     "name": "ISM",
     "short_name": "ISM",
-    "theme_color": "#405EFF",
+    "theme_color": "#333333",
     "icons": [
         {
             "src": "./img/icons/android-chrome-192x192.png",
