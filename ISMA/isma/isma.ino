@@ -21,7 +21,6 @@ const char *password = "";
 IPAddress staticIP(192, 168, 0, 11); //ESP static ip
 IPAddress gateway(192, 168, 0, 1);   //IP Address of your WiFi Router (Gateway)
 IPAddress subnet(255, 255, 255, 0);  //Subnet mask
-IPAddress dns(8, 8, 8, 8);           //DNS
 
 Servo myservo;
 
@@ -513,6 +512,8 @@ void setup()
 {
   Serial.begin(115200);
 
+  delay(2000);
+
   //pins
   Serial.println();
   Serial.print("Pins Initialize...");
@@ -537,8 +538,21 @@ void setup()
   delay(100);
 
   //WiFi
+  Serial.print("WiFi Configuration...");
+  digitalWrite(led, 1);
+  WiFi.disconnect();
+  if (WiFi.config(staticIP, gateway, subnet))
+  {
+    Serial.println("ok");
+  }
+  else
+  {
+    Serial.println("failed");
+  }
+  WiFi.hostname("ismp.ism");
   WiFi.mode(WIFI_STA);
-  WiFi.config(staticIP, subnet, gateway, dns);
+  digitalWrite(led, 0);
+  delay(100);
 
   Serial.print("WiFi Initialize...");
   digitalWrite(led, 0);
