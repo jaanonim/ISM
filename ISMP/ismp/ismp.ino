@@ -20,6 +20,8 @@ const char *password = "";
 IPAddress staticIP(192, 168, 0, 15); //ESP static ip
 IPAddress gateway(192, 168, 0, 1);   //IP Address of your WiFi Router (Gateway)
 IPAddress subnet(255, 255, 255, 0);  //Subnet mask
+IPAddress dns(8,8,8,8);              //DNS
+
 
 int led = 15; //D0 D8
 
@@ -50,7 +52,7 @@ float vcc;
 
 WiFiUDP ntpUDP;
 
-NTPClient timeClient(ntpUDP, "0.pl.pool.ntp.org", 3600);
+NTPClient timeClient(ntpUDP, "192.168.0.26", 3600);
 ESP8266WebServer server(80);
 
 OneWire oneWire(pinTem);
@@ -651,7 +653,7 @@ void setup()
   Serial.print("WiFi Configuration...");
   digitalWrite(led, 1);
   WiFi.disconnect();
-  if (WiFi.config(staticIP, gateway, subnet))
+  if (WiFi.config(staticIP, gateway, subnet, dns))
   {
     Serial.println("ok");
   }

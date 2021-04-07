@@ -62,8 +62,8 @@ export default {
       userActivityThrottlerTimeout: null,
       userActivityTimeout: null,
 
-      isLogin: true,
-      token: null,
+      token: localStorage.token,
+      isLogin: false,
     };
   },
   components: {
@@ -108,7 +108,10 @@ export default {
             },
             { headers: { "Content-Type": "application/json" } }
           )
-          .then((response) => (this.token = response.data["access_token"]));
+          .then((response) => {
+            this.token = response.data["access_token"];
+            localStorage.token = this.token;
+          });
       } catch (e) {
         this.active = true;
         this.popupText = e;
