@@ -360,14 +360,14 @@ void check()
   float temperaturaOut = (sensors.getTempCByIndex(outIndex));
 
   //podlewanie
-  if (timeClient.getFormattedTime() > pTime + ":00" && timeClient.getFormattedTime() < pTime + ":10")
+  if (timeClient.getFormattedTime() > pTime + ":00" && timeClient.getFormattedTime() < pTime + ":30")
   {
     podlej();
     isWater = true;
   }
 
   //reset
-  if (timeClient.getFormattedTime() > rTime + ":00" && timeClient.getFormattedTime() < rTime + ":10")
+  if (timeClient.getFormattedTime() > rTime + ":00" && timeClient.getFormattedTime() < rTime + ":30")
   {
     if (isWater || alarm)
     {

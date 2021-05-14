@@ -330,14 +330,14 @@ void handleTime()
 void checkP()
 {
   //-----P1-----
-  if (timeClient.getFormattedTime() > p1timeS + ":00" && timeClient.getFormattedTime() < p1timeS + ":10")
+  if (timeClient.getFormattedTime() > p1timeS + ":00" && timeClient.getFormattedTime() < p1timeS + ":30")
   {
     digitalWrite(led, 0);
     digitalWrite(p1, 0);
     vP1 = true;
     Serial.println("p1-ON");
   }
-  if (timeClient.getFormattedTime() > p1timeE + ":00" && timeClient.getFormattedTime() < p1timeE + ":10")
+  if (timeClient.getFormattedTime() > p1timeE + ":00" && timeClient.getFormattedTime() < p1timeE + ":30")
   {
     digitalWrite(led, 0);
     digitalWrite(p1, 1);
@@ -346,14 +346,14 @@ void checkP()
   }
 
   //-----P2------
-  if (timeClient.getFormattedTime() > p2timeS + ":00" && timeClient.getFormattedTime() < p2timeS + ":10")
+  if (timeClient.getFormattedTime() > p2timeS + ":00" && timeClient.getFormattedTime() < p2timeS + ":30")
   {
     digitalWrite(led, 0);
     digitalWrite(p2, 0);
     vP2 = true;
     Serial.println("p2-ON");
   }
-  if (timeClient.getFormattedTime() > p2timeE + ":00" && timeClient.getFormattedTime() < p2timeE + ":10")
+  if (timeClient.getFormattedTime() > p2timeE + ":00" && timeClient.getFormattedTime() < p2timeE + ":30")
   {
     digitalWrite(led, 0);
     digitalWrite(p2, 1);
@@ -362,7 +362,7 @@ void checkP()
   }
 
   //-----Karm------
-  if (timeClient.getFormattedTime() > ktime + ":00" && timeClient.getFormattedTime() < ktime + ":10")
+  if (timeClient.getFormattedTime() > ktime + ":00" && timeClient.getFormattedTime() < ktime + ":30")
   {
     karm();
     isKarm = false;
