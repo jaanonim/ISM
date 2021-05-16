@@ -377,7 +377,7 @@ void check()
   }
 
   //alarm
-  if (round(temperaturaIn) < round(temperaturaOut) && alarmIsAble)
+  if (temperaturaOut > -100 && temperaturaIn > -100 && round(temperaturaIn) < round(temperaturaOut) && alarmIsAble)
   {
     Alarm();
     alarm = true;
