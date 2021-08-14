@@ -16,6 +16,11 @@
     <div class="value" v-if="item.type === 'action'">
       <button @click="action">{{ item.field }}</button>
     </div>
+    <div class="value" v-if="item.type === 'redirection'">
+      <button @click="newPage(item.addres)">
+        {{ item.field }}
+      </button>
+    </div>
     <div class="value" v-if="item.type === 'bool'">
       <label class="switch">
         <input type="checkbox" :checked="value" @click="checkbox" />
@@ -76,6 +81,9 @@ export default {
       } catch (e) {
         console.log(e);
       }
+    },
+    newPage(v) {
+      window.open(v, "_blank");
     },
   },
 };
