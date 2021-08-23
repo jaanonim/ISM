@@ -486,6 +486,7 @@ vue/ism_vue/dist.zip
 
 **creds.h
 
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
