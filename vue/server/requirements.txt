@@ -1,5 +1,3 @@
 flask
-flask_cors
-Flask-JWT
 gpiozero
-requests
+flask-socketio
