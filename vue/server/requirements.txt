@@ -2,3 +2,4 @@ flask
 gpiozero
 flask-socketio
 flask-cors
+flask_jwt

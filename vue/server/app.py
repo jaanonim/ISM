@@ -1,39 +1,42 @@
+import datetime
+
 from flask import Flask, abort, request
 from flask_cors import CORS
-from flask_login import LoginManager, UserMixin, current_user, login_user
-from flask_socketio import SocketIO, emit
+from flask_jwt import JWT, _jwt, current_identity, jwt_required
+from flask_socketio import SocketIO, disconnect, emit
 from gpiozero import CPUTemperature
+from werkzeug.security import safe_str_cmp
 
 from data import Data
 from server import Server
 
+username_table = {u.username: u for u in Data.users}
+userid_table = {u.id: u for u in Data.users}
+
+
+def authenticate(username, password):
+    user = username_table.get(username, None)
+    if user and safe_str_cmp(user.password.encode("utf-8"), password.encode("utf-8")):
+        return user
+
+
+def identity(payload):
+    user_id = payload["identity"]
+    return userid_table.get(user_id, None)
+
+
+def callback(name, data):
+    with app.test_request_context("/"):
+        emit(name, data, namespace="/", broadcast=True)
+
+
 app = Flask(__name__)
 CORS(app)
 app.config["SECRET_KEY"] = Data.secretKey
-app.config["SERVER"] = Server.getInstance()
-login = LoginManager(app)
+app.config["SERVER"] = Server.getInstance(callback)
+app.config["JWT_EXPIRATION_DELTA"] = datetime.timedelta(days=7)
+jwt = JWT(app, authenticate, identity)
 socketio = SocketIO(app, async_mode="threading", cors_allowed_origins="*")
-
-
-@login.user_loader
-def user_loader(id):
-    return User(id)
-
-
-class User(UserMixin):
-    def __init__(self, username):
-        self.id = username
-
-
-@app.route("/login", methods=["POST"])
-def login():
-    username = request.form["username"]
-    password = request.form["password"]
-    print(username, password, str(username not in Data.users), Data.users[username])
-    if username not in Data.users or Data.users[username] != password:
-        abort(401)
-    login_user(User(username))
-    return ""
 
 
 """
@@ -44,10 +47,14 @@ def api():
 
 
 @socketio.on("connect")
-def on_connect():
-    if current_user.is_anonymous:
-        pass
-        # return False
+def on_connect(auth):
+    token = auth.get("token")
+    if token is None:
+        return False
+    try:
+        payload = _jwt.jwt_decode_callback(token)
+    except:
+        return False
 
 
 @socketio.on("set")
@@ -91,8 +98,6 @@ def _set(json):
 
 @socketio.on("get")
 def _get(json):
-    print("ok")
-
     try:
         name = json["name"]
     except:
@@ -107,7 +112,7 @@ def _get(json):
 
     if name == "GAPI":
         emit("get", {"name": name, "payload": {"data": {"temp": 100}}})
-        #emit("get", {"name": name, "payload": {"data": {"temp": CPUTemperature().temperature}}})
+        # emit("get", {"name": name, "payload": {"data": {"temp": CPUTemperature().temperature}}})
         return
 
     if not Server.getInstance().isName(name):

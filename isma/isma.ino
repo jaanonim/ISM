@@ -51,6 +51,8 @@ String ktime = "00:00";
 bool vP1 = false;
 bool vP2 = false;
 
+float lastTemp;
+
 Servo myservo;
 
 OneWire oneWire(pinTem);
@@ -84,6 +86,8 @@ String getData()
   String zegar = timeClient.getFormattedTime();
   sensors.requestTemperatures();
   float temperatura = (sensors.getTempCByIndex(0));
+
+  lastTemp = temperatura;
 
   String data = "{ \"Time\": \"";
   data += zegar;
@@ -241,6 +245,28 @@ String SetTimers(String s)
 
   digitalWrite(led, 1);
   return "";
+}
+
+void checkUpdate()
+{
+  sensors.requestTemperatures();
+  float temperatura = (sensors.getTempCByIndex(0));
+
+  if (abs(lastTemp - temperatura) > 0.5)
+  {
+    String zegar = timeClient.getFormattedTime();
+    lastTemp = temperatura;
+    String data = "{ \"Time\": \"";
+    data += zegar;
+    data += "\", \"Voltage\": ";
+    data += vcc;
+    data += ", \"Temp\": ";
+    data += temperatura;
+    data += "}";
+    Serial.print("[CLIENT] ");
+    Serial.println("Update");
+    client.print("DATA:" + data);
+  }
 }
 
 String readMessage()
@@ -568,6 +594,10 @@ void loop()
     else
     {
     }
+  }
+  else
+  {
+    checkUpdate();
   }
 
   delay(500);

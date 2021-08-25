@@ -54,6 +54,9 @@ bool alarmIsAble = false; //save
 bool alarm = false;
 bool pump = false;
 
+float lastTempIn;
+float lastTempOut;
+
 OneWire oneWire(pinTem);
 DallasTemperature sensors(&oneWire);
 
@@ -86,6 +89,9 @@ String getData()
   sensors.requestTemperatures();
   float temperaturaIn = (sensors.getTempCByIndex(inIndex));
   float temperaturaOut = (sensors.getTempCByIndex(outIndex));
+
+  lastTempIn = temperaturaIn;
+  lastTempOut = temperaturaOut;
 
   String data = "{ \"Time\": \"";
   data += zegar;
@@ -246,6 +252,32 @@ String SetTimers(String s)
 
   digitalWrite(led, 0);
   return "";
+}
+
+void checkUpdate()
+{
+  sensors.requestTemperatures();
+  float temperaturaIn = (sensors.getTempCByIndex(inIndex));
+  float temperaturaOut = (sensors.getTempCByIndex(outIndex));
+
+  if ((abs(lastTempIn - temperaturaIn) > 0.5) || (abs(lastTempOut - temperaturaOut) > 0.5))
+  {
+    String zegar = timeClient.getFormattedTime();
+    lastTempIn = temperaturaIn;
+    lastTempOut = temperaturaOut;
+    String data = "{ \"Time\": \"";
+    data += zegar;
+    data += "\", \"Voltage\": ";
+    data += vcc;
+    data += ", \"Temp_in\": ";
+    data += temperaturaIn;
+    data += ", \"Temp_out\": ";
+    data += temperaturaOut;
+    data += "}";
+    Serial.print("[CLIENT] ");
+    Serial.println("Update");
+    client.print("DATA:" + data);
+  }
 }
 
 String readMessage()
@@ -666,6 +698,10 @@ void loop()
     else
     {
     }
+  }
+  else
+  {
+    checkUpdate();
   }
 
   delay(500);

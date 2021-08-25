@@ -62,7 +62,8 @@ export default {
           this.isSet = false;
           this.loading = false;
         } else {
-          this.data = data.payload.data;
+          this.data = Object.assign({}, this.data, data.payload.data);
+          this.error = "";
           this.status = true;
           this.isSet = true;
           this.loading = false;

@@ -25,11 +25,6 @@
         ref="block3"
         v-if="page === 0"
       />
-      <localSettings
-        @popup="popup"
-        @setInactive="setInactive"
-        v-if="page === 1"
-      ></localSettings>
     </div>
     <popup :text="popupText" :style="popupColorF"></popup>
     <login @loginDone="loginDone" v-if="isLogin"></login>
@@ -41,7 +36,6 @@ import axios from "axios";
 import popup from "./popup.vue";
 import Block from "./Block.vue";
 import login from "./login.vue";
-import localSettings from "./settings/localSettings.vue";
 
 export default {
   name: "Main",
@@ -64,7 +58,6 @@ export default {
   },
   components: {
     Block,
-    localSettings,
     popup,
     login,
   },
@@ -97,6 +90,9 @@ export default {
       };
     },
   },
+  mounted: function () {
+    this.update();
+  },
   methods: {
     update() {
       this.$refs.block1.getData();
@@ -114,7 +110,8 @@ export default {
       try {
         await axios
           .post(
-            window.location.origin + this.blocks[2].endpoint + "/auth",
+            //window.location.origin + "/auth",
+            "http://192.168.0.27:5000/auth",
             {
               username: v.username,
               password: v.password,
@@ -156,60 +153,6 @@ export default {
         this.active = false;
       }, 2000);
     },
-    setInactive(v) {
-      this.inactiveTime = v;
-    },
-
-    resetUserActivityTimeout() {
-      clearTimeout(this.userActivityTimeout);
-      this.userActivityTimeout = setTimeout(() => {
-        this.inactiveUserAction();
-      }, this.inactiveTime * 1000);
-    },
-    activateActivityTracker() {
-      window.addEventListener("mousemove", this.userActivityThrottler);
-      window.addEventListener("mousemove", this.resetUserActivityTimeout);
-      window.addEventListener("scroll", this.resetUserActivityTimeout);
-      window.addEventListener("keydown", this.resetUserActivityTimeout);
-      window.addEventListener("resize", this.resetUserActivityTimeout);
-    },
-    userActivityThrottler() {
-      if (!this.userActivityThrottlerTimeout) {
-        this.userActivityThrottlerTimeout = setTimeout(() => {
-          this.resetUserActivityTimeout();
-
-          clearTimeout(this.userActivityThrottlerTimeout);
-          this.userActivityThrottlerTimeout = null;
-        }, 10000);
-      }
-    },
-    inactiveUserAction() {
-      this.isInactive = true;
-      this.active = true;
-
-      this.popupText =
-        "Wykryto brak aktywności! Proszę odświerzyć strone, aby kontynuować...";
-      this.popupColor = "rgba(255,0,0,0.75)";
-    },
-  },
-  mounted: function () {
-    if (this.inactiveTime == null) {
-      this.inactiveTime = 600;
-      localStorage.setItem("inactive", 600);
-    }
-    this.update();
-  },
-  beforeMount() {
-    this.activateActivityTracker();
-  },
-  beforeDestroy() {
-    window.removeEventListener("mousemove", this.userActivityThrottler);
-    window.removeEventListener("scroll", this.userActivityThrottler);
-    window.removeEventListener("keydown", this.userActivityThrottler);
-    window.removeEventListener("resize", this.userActivityThrottler);
-
-    clearTimeout(this.userActivityTimeout);
-    clearTimeout(this.userActivityThrottlerTimeout);
   },
 };
 </script>

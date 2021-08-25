@@ -11,18 +11,19 @@ class Server:
     __instance = None
 
     @staticmethod
-    def getInstance():
+    def getInstance(callback=None):
         if Server.__instance == None:
-            Server()
+            Server(callback)
         return Server.__instance
 
-    def __init__(self):
+    def __init__(self, callback):
 
         if Server.__instance != None:
             raise Exception("This class is a singleton!")
         else:
             Server.__instance = self
 
+        self.callback = callback
         self.clients = {}
         self.size = 2048
         self.port = 2693
@@ -77,6 +78,7 @@ class Server:
             msg = self.clients[name].recv(self.size).decode()
             if not msg:
                 continue
+
             code, info = msg.split(":", 1)
             print(f"[SERVER] {code} : {info}")
             if self.command[name]:
@@ -95,11 +97,11 @@ class Server:
                 self.command[name] = None
                 continue
             if code == "PING":
-                self.send("OK:OK")
+                self.send("OK:OK", name)
             elif code == "DATA":
                 data = json.loads(info)
-                print(data)
-                self.send("OK:OK")
+                self.callback("get", {"name": name, "payload": {"data": data}})
+                self.send("OK:OK", name)
             elif code == "OK":
                 continue
 
