@@ -12,7 +12,7 @@ CORS(app)
 app.config["SECRET_KEY"] = Data.secretKey
 app.config["SERVER"] = Server.getInstance()
 login = LoginManager(app)
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, async_mode="threading", cors_allowed_origins="*")
 
 
 @login.user_loader
@@ -123,4 +123,5 @@ def _get(json):
 
 
 if __name__ == "__main__":
-    socketio.run(app, host=Data.addres, port="5000")
+    socketio.run(app, host="localhost", port="5000")
+    # socketio.run(app, host=Data.addres, port="5000")
