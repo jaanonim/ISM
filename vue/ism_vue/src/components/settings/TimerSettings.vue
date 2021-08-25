@@ -13,11 +13,10 @@
 </template>
 
 <script>
-import axios from "axios";
 import InputField from "./InputField.vue";
 
 export default {
-  props: ["block", "data", "token"],
+  props: ["block", "data"],
   components: {
     InputField,
   },
@@ -45,21 +44,11 @@ export default {
       }
       request = request.substring(0, request.length - 2);
       request += "}";
-      try {
-        await axios({
-          method: "get",
-          url: window.location.origin + this.block.endpoint + "/api/time",
-          params: JSON.parse(request),
-          headers: { Authorization: "JWT " + this.token },
-        })
-          .then((response) => (this.info = response.data))
-          .finally(() => this.$emit("update"));
-      } catch (e) {
-        console.error(e);
-        this.$emit("popup", e);
-        return;
-      }
-      this.$emit("popup", "");
+      console.log({ name: this.block.addres, payload: JSON.parse(request) });
+      this.$socket.emit("set", {
+        name: this.block.addres,
+        payload: JSON.parse(request),
+      });
     },
   },
 };

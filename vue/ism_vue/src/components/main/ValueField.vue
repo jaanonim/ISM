@@ -1,6 +1,7 @@
 <template>
   <div>
     {{ item.name }}
+
     <div
       class="value valueBg"
       v-if="
@@ -9,31 +10,36 @@
     >
       {{ value }}
     </div>
+
     <div class="value valueBg" v-if="item.type === 'vcc'">{{ value }} V</div>
+
     <div class="value valueBg" v-if="item.type === 'temp'">
       {{ value }} &deg;C
     </div>
+
     <div class="value" v-if="item.type === 'action'">
       <button @click="action">{{ item.field }}</button>
     </div>
+
     <div class="value" v-if="item.type === 'redirection'">
       <button @click="newPage(item.addres)">
         {{ item.field }}
       </button>
     </div>
+
     <div class="value" v-if="item.type === 'bool'">
       <label class="switch">
         <input type="checkbox" :checked="value" @click="checkbox" />
         <span class="slider"></span>
       </label>
     </div>
+
     <div class="obj value" v-if="item.type === 'object'">
       <div v-for="item2 in item.value" :key="item2.field">
         <ValueField
-          :endpoint="endpoint"
+          :addres="addres"
           :item="item2"
           :value="value[item2.field]"
-          :token="token"
         />
       </div>
     </div>
@@ -41,46 +47,21 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   name: "ValueField",
-  props: ["item", "value", "endpoint", "token"],
+  props: ["item", "value", "addres"],
   methods: {
     async checkbox() {
-      if (this.value) {
-        this.value = false;
-        try {
-          await axios.get(
-            window.location.origin + this.endpoint + this.item.offAddres,
-            { headers: { Authorization: "JWT " + this.token } }
-          );
-        } catch (e) {
-          console.log(e);
-        }
-      } else {
-        this.value = true;
-        try {
-          await axios.get(
-            window.location.origin + this.endpoint + this.item.onAddres,
-            { headers: { Authorization: "JWT " + this.token } }
-          );
-        } catch (e) {
-          console.log(e);
-        }
-      }
+      this.value = !this.value;
+      var obj = {};
+      obj[this.item.action] = this.value;
+      console.log(obj);
+      this.$socket.emit("set", { name: this.addres, payload: obj });
     },
     async action() {
-      try {
-        await axios.get(
-          window.location.origin + this.endpoint + this.item.onAddres,
-          {
-            headers: { Authorization: "JWT " + this.token },
-          }
-        );
-      } catch (e) {
-        console.log(e);
-      }
+      var obj = {};
+      obj[this.item.action] = true;
+      this.$socket.emit("set", { name: this.addres, payload: obj });
     },
     newPage(v) {
       window.open(v, "_blank");

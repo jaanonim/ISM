@@ -54,13 +54,13 @@ def on_connect():
 def _set(json):
 
     try:
-        name = json["addres"]
+        name = json["name"]
     except:
         emit(
             "set",
             {
                 "name": None,
-                "payload": {"error": "Invalid json (the address is missing)"},
+                "payload": {"error": "Invalid json (the name is missing)"},
             },
         )
         return
@@ -78,7 +78,7 @@ def _set(json):
         return
 
     if not Server.getInstance().isName(name):
-        emit("set", {"name": name, "payload": {"error": "Invalid addres"}})
+        emit("set", {"name": name, "payload": {"error": "Invalid name"}})
         return
 
     data = Server.getInstance().send_set(name, payload)
@@ -94,24 +94,24 @@ def _get(json):
     print("ok")
 
     try:
-        name = json["addres"]
+        name = json["name"]
     except:
         emit(
             "get",
             {
                 "name": None,
-                "payload": {"error": "Invalid json (the address is missing)"},
+                "payload": {"error": "Invalid json (the name is missing)"},
             },
         )
         return
 
     if name == "GAPI":
-        cpu = CPUTemperature()
-        emit("get", {"name": name, "payload": {"data": {"temp": cpu.temperature}}})
+        emit("get", {"name": name, "payload": {"data": {"temp": 100}}})
+        #emit("get", {"name": name, "payload": {"data": {"temp": CPUTemperature().temperature}}})
         return
 
     if not Server.getInstance().isName(name):
-        emit("get", {"name": name, "payload": {"error": "Invalid addres"}})
+        emit("get", {"name": name, "payload": {"error": "Invalid name"}})
         return
 
     data = Server.getInstance().send_get(name)

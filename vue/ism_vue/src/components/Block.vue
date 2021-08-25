@@ -16,17 +16,11 @@
       <div class="space">
         <p v-if="!isSet">Dane nie są dostepne.</p>
         <div v-else>
-          <mainSite
-            v-if="page === 0"
-            :block="block"
-            :data="data"
-            :token="token"
-          ></mainSite>
+          <mainSite v-if="page === 0" :block="block" :data="data"></mainSite>
           <TimerSettings
             v-if="page == 1"
             :block="block"
             :data="data"
-            :token="token"
             @popup="popup"
             @update="getData"
           ></TimerSettings>
@@ -42,7 +36,7 @@ import mainSite from "./main/mainSite.vue";
 import TimerSettings from "./settings/TimerSettings.vue";
 
 export default {
-  props: ["block", "page", "isInactive", "token"],
+  props: ["block", "page", "isInactive"],
   components: {
     TimerSettings,
     mainSite,
@@ -61,6 +55,19 @@ export default {
   sockets: {
     get: function (data) {
       console.log("get", data);
+      if (data.name === this.block.addres) {
+        if (data.payload.error) {
+          this.error = data.payload.error;
+          this.status = false;
+          this.isSet = false;
+          this.loading = false;
+        } else {
+          this.data = data.payload.data;
+          this.status = true;
+          this.isSet = true;
+          this.loading = false;
+        }
+      }
     },
   },
   computed: {
@@ -71,7 +78,10 @@ export default {
     },
   },
   methods: {
-    async getData() {},
+    async getData() {
+      this.loading = true;
+      this.$socket.emit("get", { name: this.block.addres });
+    },
     popup(v) {
       this.$emit("popup", v);
     },

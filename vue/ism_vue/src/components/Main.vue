@@ -8,7 +8,6 @@
         :page="page"
         :block="this.blocks[0]"
         :isInactive="isInactive"
-        :token="token"
         ref="block1"
       />
       <Block
@@ -16,7 +15,6 @@
         :page="page"
         :block="this.blocks[1]"
         :isInactive="isInactive"
-        :token="token"
         ref="block2"
       />
       <Block
@@ -24,7 +22,6 @@
         :page="page"
         :block="this.blocks[2]"
         :isInactive="isInactive"
-        :token="token"
         ref="block3"
         v-if="page === 0"
       />
@@ -70,6 +67,16 @@ export default {
     localSettings,
     popup,
     login,
+  },
+  sockets: {
+    set: function (data) {
+      console.log("set", data);
+      if (data.payload == null) {
+        this.popup("");
+      } else {
+        this.popup(data.name + ": " + data.payload.error);
+      }
+    },
   },
   computed: {
     popupColorF: function () {
@@ -131,7 +138,7 @@ export default {
     },
     popup(v) {
       this.active = true;
-      if (v === "") {
+      if (v == "") {
         this.popupText = "Zapisano!";
         this.popupColor = "rgba(0,255,0,0.75)";
       } else {
