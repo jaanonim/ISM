@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import mainSite from "./main/mainSite.vue";
 import TimerSettings from "./settings/TimerSettings.vue";
 
@@ -59,12 +58,10 @@ export default {
       error: "",
     };
   },
-  mounted: function () {
-    this.update();
-    if (this.updateTime == null) {
-      this.updateTime = 60;
-      localStorage.setItem("update", 60);
-    }
+  sockets: {
+    get: function (data) {
+      console.log("get", data);
+    },
   },
   computed: {
     boxColor: function () {
@@ -74,40 +71,7 @@ export default {
     },
   },
   methods: {
-    async getData() {
-      this.time = 0;
-      this.loading = true;
-      try {
-        const res = await axios
-          .get(window.location.origin + this.block.endpoint + "/api", {
-            headers: { Authorization: "JWT " + this.token },
-          })
-          .then((response) => (this.info = response.data))
-          .finally(() => (this.loading = false));
-
-        this.data = res;
-        this.error = "";
-        this.isSet = true;
-        this.status = true;
-      } catch (e) {
-        this.error = e;
-        this.status = false;
-        this.isSet = false;
-        this.loading = false;
-      }
-    },
-    update() {
-      if (this.isInactive) {
-        return;
-      }
-      if (this.time >= this.updateTime) {
-        this.getData();
-      }
-      this.time += 1;
-      setTimeout(() => {
-        this.update();
-      }, 1000);
-    },
+    async getData() {},
     popup(v) {
       this.$emit("popup", v);
     },

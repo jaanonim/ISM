@@ -1,7 +1,7 @@
 [{
       "title": "I.S.M.A.",
       "color": "#3355ff",
-      "endpoint": "/api/isma",
+      "addres": "ISMA",
       "value": [{
             "field": "Time",
             "name": "Czas:",
@@ -27,7 +27,7 @@
             "field": "Karm",
             "name": "Karmienie:",
             "type": "action",
-            "onAddres": "/karm"
+            "formField": "karm"
          },
          {
             "field": "P1",
@@ -49,8 +49,7 @@
                   "field": "status",
                   "name": "Status:",
                   "type": "bool",
-                  "onAddres": "/onp1",
-                  "offAddres": "/offp1"
+                  "formField": "p1"
                }
             ]
          },
@@ -74,8 +73,7 @@
                   "field": "status",
                   "name": "Status:",
                   "type": "bool",
-                  "onAddres": "/onp2",
-                  "offAddres": "/offp2"
+                  "formField": "p2"
                }
             ]
          }
@@ -84,7 +82,7 @@
    {
       "title": "I.S.M.P.",
       "color": "#33ff55",
-      "endpoint": "/api/ismp",
+      "addres": "ISMP",
       "value": [{
             "field": "Time",
             "name": "Czas:",
@@ -125,8 +123,7 @@
                   "field": "status",
                   "name": "Status:",
                   "type": "bool",
-                  "onAddres": "/on",
-                  "offAddres": "/off"
+                  "formField": "alarm"
                }
             ]
          },
@@ -161,14 +158,13 @@
                   "field": "status",
                   "name": "Status:",
                   "type": "bool",
-                  "onAddres": "/onp",
-                  "offAddres": "/offp"
+                  "formField": "woda"
                },
                {
                   "field": "Podlej",
                   "name": "Podlewanie:",
                   "type": "action",
-                  "onAddres": "/podlej"
+                  "formField": "podlej"
                }
             ]
          }
@@ -177,21 +173,11 @@
    {
       "title": "I.S.M.",
       "color": "#ffffff",
-      "endpoint": "/api",
+      "addres": "GAPI",
       "value": [{
             "field": "temp",
             "name": "Temperatura CPU:",
             "type": "temp"
-         },
-         {
-            "field": "isma",
-            "name": "ISMA:",
-            "type": "string"
-         },
-         {
-            "field": "ismp",
-            "name": "ISMP:",
-            "type": "string"
          },
          {
             "field": "Muzyka",

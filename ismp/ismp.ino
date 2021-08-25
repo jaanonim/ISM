@@ -22,8 +22,8 @@ WiFiClient client;
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "192.168.0.26", 3600);
 
-const uint16_t port = 999;
-const IPAddress server(192, 168, 0, 26);
+const uint16_t port = 2693;
+const IPAddress server(192, 168, 0, 27);
 
 bool connectionAuthorized = false;
 

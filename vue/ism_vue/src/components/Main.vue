@@ -31,7 +31,6 @@
       <localSettings
         @popup="popup"
         @setInactive="setInactive"
-        @setUpdate="setUpdate"
         v-if="page === 1"
       ></localSettings>
     </div>
@@ -142,11 +141,6 @@ export default {
       setTimeout(() => {
         this.active = false;
       }, 2000);
-    },
-    setUpdate(v) {
-      this.$refs.block1.updateTime = v;
-      this.$refs.block2.updateTime = v;
-      this.$refs.block3.updateTime = v;
     },
     setInactive(v) {
       this.inactiveTime = v;

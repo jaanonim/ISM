@@ -1,4 +1,5 @@
 from flask import Flask, abort, request
+from flask_cors import CORS
 from flask_login import LoginManager, UserMixin, current_user, login_user
 from flask_socketio import SocketIO, emit
 from gpiozero import CPUTemperature
@@ -7,6 +8,7 @@ from data import Data
 from server import Server
 
 app = Flask(__name__)
+CORS(app)
 app.config["SECRET_KEY"] = Data.secretKey
 app.config["SERVER"] = Server.getInstance()
 login = LoginManager(app)
@@ -44,7 +46,8 @@ def api():
 @socketio.on("connect")
 def on_connect():
     if current_user.is_anonymous:
-        return False
+        pass
+        # return False
 
 
 @socketio.on("set")
@@ -88,6 +91,7 @@ def _set(json):
 
 @socketio.on("get")
 def _get(json):
+    print("ok")
 
     try:
         name = json["addres"]
