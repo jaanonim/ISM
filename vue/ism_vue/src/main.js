@@ -7,7 +7,7 @@ import * as io from "socket.io-client";
 Vue.config.productionTip = false
 Vue.use(new VueSocketIO({
   debug: true,
-  connection: io('http://localhost:5000'), 
+  connection: io('http://192.168.0.27:5000'), 
   vuex: {
     actionPrefix: "SOCKET_",
     mutationPrefix: "SOCKET_"

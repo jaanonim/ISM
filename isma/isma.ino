@@ -128,8 +128,8 @@ String SetTimers(String s)
   digitalWrite(led, 0);
   Serial.println("Getting Values: ");
 
-  StaticJsonDocument<400> doc;
-  DeserializationError error = deserializeJson(doc, s);
+  StaticJsonDocument<400> buffer;
+  DeserializationError error = deserializeJson(buffer, s);
 
   if (error)
   {
@@ -138,66 +138,59 @@ String SetTimers(String s)
     return "Deserialize json failed";
   }
 
-  String _ktime = doc["ktime"];
-  String _p1timeS = doc["p1times"];
-  String _p1timeE = doc["p1timee"];
-  String _p2timeS = doc["p2times"];
-  String _p2timeE = doc["p2timee"];
-  bool _karm = doc["karm"];
-  bool _p1 = doc["p1"];
-  bool _p2 = doc["p2"];
+  JsonObject doc = buffer.as<JsonObject>();
 
   bool valid = false;
   bool save = false;
 
   // -------- TIMERS --------
 
-  if (_ktime != "null")
+  if (doc.containsKey("ktime"))
   {
-    ktime = _ktime;
+    ktime = (String)doc["ktime"];
     valid = true;
     save = true;
   }
-  if (_p1timeS != "null")
+  if (doc.containsKey("p1times"))
   {
-    p1timeS = _p1timeS;
+    p1timeS = (String)doc["p1times"];
     valid = true;
     save = true;
   }
-  if (_p1timeE != "null")
+  if (doc.containsKey("p1timee"))
   {
-    p1timeE = _p1timeE;
+    p1timeE = (String)doc["p1timee"];
     valid = true;
     save = true;
   }
-  if (_p2timeS != "null")
+  if (doc.containsKey("p2times"))
   {
-    p2timeS = _p2timeS;
+    p2timeS = (String)doc["p2times"];
     valid = true;
     save = true;
   }
-  if (_p2timeE != "null")
+  if (doc.containsKey("p2timee"))
   {
-    p2timeE = _p2timeE;
+    p2timeE = (String)doc["p2timee"];
     valid = true;
     save = true;
   }
 
   // -------- ACTIONS --------
 
-  if (_karm != NULL)
+  if (doc.containsKey("karm"))
   {
     valid = true;
-    if (_karm)
+    if (doc["karm"])
     {
       karmie();
     }
   }
-  if (_p1 != NULL)
+  if (doc.containsKey("p1"))
   {
-    if (_p1 != vP1)
+    if (vP1 != doc["p1"])
     {
-      vP1 = _p1;
+      vP1 = !vP1;
       if (vP1)
       {
         digitalWrite(p1, 0);
@@ -211,11 +204,11 @@ String SetTimers(String s)
     }
     valid = true;
   }
-  if (_p2 != NULL)
+  if (doc.containsKey("p2"))
   {
-    if (_p2 != vP2)
+    if (vP2 != doc["p2"])
     {
-      vP2 = _p2;
+      vP2 = !vP2;
       if (vP2)
       {
         digitalWrite(p2, 0);

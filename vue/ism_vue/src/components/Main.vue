@@ -73,6 +73,13 @@ export default {
       console.log("set", data);
       if (data.payload == null) {
         this.popup("");
+        if (this.blocks[0].addres == data.name) {
+          this.$refs.block1.getData();
+        } else if (this.blocks[1].addres == data.name) {
+          this.$refs.block2.getData();
+        } else if (this.blocks[2].addres == data.name) {
+          this.$refs.block3.getData();
+        }
       } else {
         this.popup(data.name + ": " + data.payload.error);
       }

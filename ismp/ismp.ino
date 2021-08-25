@@ -134,8 +134,8 @@ String SetTimers(String s)
   digitalWrite(led, 1);
   Serial.println("Getting Values: ");
 
-  StaticJsonDocument<400> doc;
-  DeserializationError error = deserializeJson(doc, s);
+  StaticJsonDocument<400> buffer;
+  DeserializationError error = deserializeJson(buffer, s);
 
   if (error)
   {
@@ -144,66 +144,59 @@ String SetTimers(String s)
     return "Deserialize json failed";
   }
 
-  String _rTime = doc["rtime"];
-  String _pTime = doc["ptime"];
-  int _len = doc["len"];
-  int _fn = doc["fn"];
-  int _lenA = doc["lena"];
-  bool _podlej = doc["podlej"];
-  bool _alarm = doc["alarm"];
-  bool _woda = doc["woda"];
+  JsonObject doc = buffer.as<JsonObject>();
 
   bool valid = false;
   bool save = false;
 
   // -------- TIMERS --------
 
-  if (_rTime != "null")
+  if (doc.containsKey("rtime"))
   {
-    rTime = _rTime;
+    rTime = (String)doc["rtime"];
     valid = true;
     save = true;
   }
-  if (_pTime != "null")
+  if (doc.containsKey("ptime"))
   {
-    pTime = _pTime;
+    pTime = (String)doc["ptime"];
     valid = true;
     save = true;
   }
-  if (_len != NULL)
+  if (doc.containsKey("len"))
   {
-    len = _len;
+    len = doc["len"];
     valid = true;
     save = true;
   }
-  if (_fn != NULL)
+  if (doc.containsKey("fn"))
   {
-    fn = _fn;
+    fn = doc["fn"];
     valid = true;
     save = true;
   }
-  if (_lenA != NULL)
+  if (doc.containsKey("lena"))
   {
-    lenA = _lenA;
+    lenA = doc["lena"];
     valid = true;
     save = true;
   }
 
   // -------- ACTIONS --------
 
-  if (_podlej != NULL)
+  if (doc.containsKey("podlej"))
   {
     valid = true;
-    if (_podlej)
+    if (doc["podlej"])
     {
       podlej();
     }
   }
-  if (_alarm != NULL)
+  if (doc.containsKey("alarm"))
   {
-    if (alarmIsAble != _alarm)
+    if (alarmIsAble != doc["alarm"])
     {
-      alarmIsAble = _alarm;
+      alarmIsAble = !alarmIsAble;
       SaveAlarm();
       if (alarmIsAble)
       {
@@ -216,11 +209,11 @@ String SetTimers(String s)
     }
     valid = true;
   }
-  if (_woda != NULL)
+  if (doc.containsKey("woda"))
   {
-    if (_woda != pump)
+    if (pump != doc["woda"])
     {
-      pump = _woda;
+      pump = !pump;
       if (pump)
       {
         digitalWrite(pompaPin, 0);
