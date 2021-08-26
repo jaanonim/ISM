@@ -8,12 +8,6 @@
             <a @click="changePage(0)">Strona Główna</a>
           </li>
           <li>
-            <a @click="newPage('192.168.0.11')">I.S.M.A.</a>
-          </li>
-          <li>
-            <a @click="newPage('192.168.0.15')">I.S.M.P.</a>
-          </li>
-          <li>
             <a @click="changePage(1)">Ustawienia</a>
           </li>
           <li>
@@ -34,9 +28,6 @@ export default {
     },
     changePage(i) {
       this.$emit("changePage", i);
-    },
-    newPage(v) {
-      window.open("http://" + v, "_blank");
     },
     changeTheam() {
       this.$emit("changeTheam");

@@ -138,6 +138,9 @@ class Server:
             pass
         return self.data[name]
 
+    def send_slient_get(self,name):
+        self.send(f"GET:GET", name)
+
     def isName(self, name):
         c = self.clients.get(name)
         if c is None:

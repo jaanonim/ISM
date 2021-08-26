@@ -36,7 +36,7 @@ app.config["SECRET_KEY"] = Data.secretKey
 app.config["SERVER"] = Server.getInstance(callback)
 app.config["JWT_EXPIRATION_DELTA"] = datetime.timedelta(days=7)
 jwt = JWT(app, authenticate, identity)
-socketio = SocketIO(app, async_mode="threading", cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 
 """
@@ -59,6 +59,7 @@ def on_connect(auth):
 
 @socketio.on("set")
 def _set(json):
+    print("[SOCKET] set", json)
 
     try:
         name = json["name"]
@@ -94,10 +95,12 @@ def _set(json):
         return
 
     emit("set", {"name": name, "payload": None})
+    Server.getInstance().send_slient_get(name)
 
 
 @socketio.on("get")
 def _get(json):
+    print("[SOCKET] get", json)
     try:
         name = json["name"]
     except:
@@ -128,4 +131,4 @@ def _get(json):
 
 
 if __name__ == "__main__":
-    socketio.run(app, host=Data.addres, port="5000")
+    socketio.run(app, host=Data.addres, port=5000)

@@ -3,3 +3,5 @@ gpiozero
 flask-socketio
 flask-cors
 flask_jwt
+gevent
+gevent-websocket

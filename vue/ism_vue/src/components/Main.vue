@@ -2,6 +2,10 @@
   <div>
     <button @click="update" class="update">Update</button>
     <button @click="login" class="update">Zaloguj</button>
+    <div class="status_block">
+      Połączenie z serwerem:
+      <div class="status" :class="{ on: isConnected }"></div>
+    </div>
     <div class="blocks">
       <Block
         @popup="popup"
@@ -42,18 +46,12 @@ export default {
   props: ["blocks", "page"],
   data() {
     return {
-      inactiveTime: localStorage.getItem("inactive"),
-
       popupText: "",
       popupColor: "rgba(0,0,0,0)",
       active: false,
 
-      isInactive: false,
-      userActivityThrottlerTimeout: null,
-      userActivityTimeout: null,
-
-      token: localStorage.token,
       isLogin: false,
+      isConnected: false,
     };
   },
   components: {
@@ -62,17 +60,18 @@ export default {
     login,
   },
   sockets: {
+    connect: function () {
+      console.log("socket connected");
+      this.isConnected = true;
+    },
+    disconnect: function () {
+      console.log("socket disconnected");
+      this.isConnected = false;
+    },
     set: function (data) {
       console.log("set", data);
       if (data.payload == null) {
         this.popup("");
-        if (this.blocks[0].addres == data.name) {
-          this.$refs.block1.getData();
-        } else if (this.blocks[1].addres == data.name) {
-          this.$refs.block2.getData();
-        } else if (this.blocks[2].addres == data.name) {
-          this.$refs.block3.getData();
-        }
       } else {
         this.popup(data.name + ": " + data.payload.error);
       }
@@ -119,8 +118,7 @@ export default {
             { headers: { "Content-Type": "application/json" } }
           )
           .then((response) => {
-            this.token = response.data["access_token"];
-            localStorage.token = this.token;
+            localStorage.token = response.data["access_token"];
           });
       } catch (e) {
         this.active = true;
@@ -136,7 +134,8 @@ export default {
       this.popupColor = "rgba(0,255,0,0.75)";
       setTimeout(() => {
         this.active = false;
-      }, 2000);
+        window.history.go();
+      }, 1000);
       this.update();
       return;
     },
@@ -162,5 +161,14 @@ export default {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+}
+.status_block {
+  display: inline-block;
+  margin: 0.2rem;
+  vertical-align: middle;
+  margin: 10px;
+  background-color: var(--presed-color);
+  border-radius: 5px;
+  padding: 0.55rem 1rem;
 }
 </style>
