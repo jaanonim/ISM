@@ -6,8 +6,7 @@ import * as io from "socket.io-client";
 
 Vue.config.productionTip = false
 Vue.use(new VueSocketIO({
-  debug: true,
-  connection: io('http://192.168.0.27:5000', {
+  connection: io(window.location.origin, {
     auth: {token: localStorage.token},
    }), 
   vuex: {

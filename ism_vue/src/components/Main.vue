@@ -109,8 +109,7 @@ export default {
       try {
         await axios
           .post(
-            //window.location.origin + "/auth",
-            "http://192.168.0.27:5000/auth",
+            window.location.origin + "/api/auth",
             {
               username: v.username,
               password: v.password,

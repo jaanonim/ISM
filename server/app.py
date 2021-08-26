@@ -39,13 +39,6 @@ jwt = JWT(app, authenticate, identity)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 
-"""
-def api():
-    cpu = CPUTemperature()
-    temp=cpu.temperature
-"""
-
-
 @socketio.on("connect")
 def on_connect(auth):
     token = auth.get("token")
@@ -114,8 +107,10 @@ def _get(json):
         return
 
     if name == "GAPI":
-        emit("get", {"name": name, "payload": {"data": {"temp": 100}}})
-        # emit("get", {"name": name, "payload": {"data": {"temp": CPUTemperature().temperature}}})
+        emit(
+            "get",
+            {"name": name, "payload": {"data": {"temp": CPUTemperature().temperature}}},
+        )
         return
 
     if not Server.getInstance().isName(name):
