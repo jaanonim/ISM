@@ -75,7 +75,18 @@ class Server:
 
     def listen(self, name):
         while True:
-            msg = self.clients[name].recv(self.size).decode()
+            try:
+                msg = self.clients[name].recv(self.size).decode()
+            except Exception as e:
+                print(f"[SERVER] {e}")
+                try:
+                    self.clients[name].close()
+                    self.clients.pop(name)
+                    self.command.pop(name)
+                    self.data.pop(name)
+                except:
+                    pass
+
             if not msg:
                 continue
 
@@ -138,7 +149,7 @@ class Server:
             pass
         return self.data[name]
 
-    def send_slient_get(self,name):
+    def send_slient_get(self, name):
         self.send(f"GET:GET", name)
 
     def isName(self, name):
