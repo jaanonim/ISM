@@ -76,6 +76,10 @@ export default {
         this.popup(data.name + ": " + data.payload.error);
       }
     },
+    dis: function () {
+      console.log("dis");
+      this.popup("Musisz się zalogować!");
+    },
   },
   computed: {
     popupColorF: function () {

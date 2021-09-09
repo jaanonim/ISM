@@ -42,11 +42,12 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 @socketio.on("connect")
 def on_connect(auth):
     token = auth.get("token")
-    if token is None:
-        return False
     try:
+        if token is None:
+            raise
         payload = _jwt.jwt_decode_callback(token)
     except:
+        emit("dis")
         return False
 
 
