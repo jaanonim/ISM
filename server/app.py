@@ -41,6 +41,7 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 
 @socketio.on("connect")
 def on_connect(auth):
+    print("[SOCKET] client connected")
     token = auth.get("token")
     try:
         if token is None:
@@ -48,8 +49,14 @@ def on_connect(auth):
         payload = _jwt.jwt_decode_callback(token)
     except:
         emit("dis")
+        print("[SOCKET] client authorize")
         return False
+    else:
+        print("[SOCKET] client disconected (wrong token)")
 
+@socketio.on("disconnect")
+def on_disconnect(auth):
+    print("[SOCKET] client disconected")
 
 @socketio.on("set")
 def _set(json):
@@ -58,7 +65,7 @@ def _set(json):
     try:
         name = json["name"]
     except:
-        emit(
+        emit_with_log(
             "set",
             {
                 "name": None,
@@ -70,7 +77,7 @@ def _set(json):
     try:
         payload = json["payload"]
     except:
-        emit(
+        emit_with_log(
             "set",
             {
                 "name": name,
@@ -80,25 +87,25 @@ def _set(json):
         return
 
     if not Server.getInstance().isName(name):
-        emit("set", {"name": name, "payload": {"error": "Invalid name"}})
+        emit_with_log("set", {"name": name, "payload": {"error": "Invalid name"}})
         return
 
     data = Server.getInstance().send_set(name, payload)
     if data["error"]:
-        emit("set", {"name": name, "payload": {"error": data["info"]}})
+        emit_with_log("set", {"name": name, "payload": {"error": data["info"]}})
         return
 
-    emit("set", {"name": name, "payload": None})
+    emit_with_log("set", {"name": name, "payload": None})
     Server.getInstance().send_slient_get(name)
 
 
 @socketio.on("get")
 def _get(json):
-    print("[SOCKET] get", json)
+    print("[SOCKET] get:", json)
     try:
         name = json["name"]
     except:
-        emit(
+        emit_with_log(
             "get",
             {
                 "name": None,
@@ -108,23 +115,28 @@ def _get(json):
         return
 
     if name == "GAPI":
-        emit(
+        emit_with_log(
             "get",
             {"name": name, "payload": {"data": {"temp": CPUTemperature().temperature}}},
         )
         return
 
     if not Server.getInstance().isName(name):
-        emit("get", {"name": name, "payload": {"error": "Invalid name"}})
+        emit_with_log("get", {"name": name, "payload": {"error": "Invalid name"}})
         return
 
     data = Server.getInstance().send_get(name)
     if data["error"]:
-        emit("get", {"name": name, "payload": {"error": data["info"]}})
+        emit_with_log("get", {"name": name, "payload": {"error": data["info"]}})
         return
+    emit_with_log("get", {"name": name, "payload": {"data": data["info"]}})
 
-    emit("get", {"name": name, "payload": {"data": data["info"]}})
+
+def emit_with_log(name, data):
+    print(f"[SOCKET] {name} returned: {data}")
+    emit(name, data)
 
 
 if __name__ == "__main__":
+    print("[SOCKET] starting socektio server")
     socketio.run(app, host=Data.addres, port=5000)

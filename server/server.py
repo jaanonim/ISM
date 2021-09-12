@@ -35,7 +35,7 @@ class Server:
         try:
             self.server.bind((self.addres, self.port))
         except Exception as e:
-            print(f"[SERVER] {e}")
+            print(f"[SERVER] Error: {e}")
             exit()
         print("[SERVER] Starting...")
         thread = threading.Thread(name="server", target=self.run, daemon=True)
