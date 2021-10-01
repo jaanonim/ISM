@@ -78,7 +78,7 @@ class Server:
             try:
                 msg = self.clients[name].recv(self.size).decode()
             except Exception as e:
-                print(f"[SERVER] {e}")
+                print(f"[SERVER] Error: {e}, {self.clients}")
                 try:
                     self.clients[name].close()
                     self.clients.pop(name)
@@ -86,6 +86,7 @@ class Server:
                     self.data.pop(name)
                 except:
                     pass
+                sys.exit()
 
             if not msg:
                 continue
@@ -122,7 +123,7 @@ class Server:
             other.send(str.encode(f"PING:{name}"))
             msg = other.recv(self.size).decode()
             if not "OK" in msg:
-                raise
+                raise Exception("Not responding")
         except:
             print(f"[SERVER] {name} diconnected (not responding).")
             other.close()
