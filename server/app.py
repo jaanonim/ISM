@@ -49,14 +49,16 @@ def on_connect(auth):
         payload = _jwt.jwt_decode_callback(token)
     except:
         emit("dis")
-        print("[SOCKET] client authorize")
+        print("[SOCKET] client disconected (wrong token)")
         return False
     else:
-        print("[SOCKET] client disconected (wrong token)")
+        print("[SOCKET] client authorize")
+
 
 @socketio.on("disconnect")
 def on_disconnect(auth):
     print("[SOCKET] client disconected")
+
 
 @socketio.on("set")
 def _set(json):

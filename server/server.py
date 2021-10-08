@@ -27,6 +27,8 @@ class Server:
         self.clients = {}
         self.size = 2048
         self.port = 2693
+        self.request_time = 10
+        self.timeout = 5
         self.addres = Data.addres
         self.command = {}
         self.data = {}
@@ -43,7 +45,7 @@ class Server:
 
     def handle_client(self, conn, addr):
         print(f"[SERVER] {addr} connected.")
-
+        conn.settimeout(self.timeout)
         left = 3
         while left > 0:
             msg = conn.recv(self.size).decode()
@@ -70,7 +72,7 @@ class Server:
                     self.listen(name)
             left -= 1
         print(f"[SERVER] {addr} timeout.")
-        conn.close()
+        conn.shutdown(socket.SHUT_RDWR)
         sys.exit()
 
     def listen(self, name):
@@ -78,9 +80,11 @@ class Server:
             try:
                 msg = self.clients[name].recv(self.size).decode()
             except Exception as e:
+                if type(e) == socket.timeout:
+                    continue
                 print(f"[SERVER] Error: {e}, {self.clients}")
                 try:
-                    self.clients[name].close()
+                    self.clients[name].shutdown(socket.SHUT_RDWR)
                     self.clients.pop(name)
                     self.command.pop(name)
                     self.data.pop(name)
@@ -126,7 +130,7 @@ class Server:
                 raise Exception("Not responding")
         except:
             print(f"[SERVER] {name} diconnected (not responding).")
-            other.close()
+            other.shutdown(socket.SHUT_RDWR)
             self.clients.pop(name)
             self.command.pop(name)
             self.data.pop(name)
@@ -134,11 +138,19 @@ class Server:
         print(f"[SERVER] {name} is still alive.")
         return True
 
+    def async_ping(self, name):
+        thread = threading.Thread(name=f"ping {name}", target=self.ping, args=(name,))
+        thread.start()
+
     def send_set(self, name, data):
         self.data[name] = None
         self.command[name] = "SET"
         self.send(f"SET:{json.dumps(data)}", name)
+        start_time = time.perf_counter()
         while self.data[name] is None:
+            if time.perf_counter() - start_time > self.request_time:
+                self.async_ping(name)
+                return {"error": True, "info": "Timeout"}
             pass
         return self.data[name]
 
@@ -146,7 +158,11 @@ class Server:
         self.data[name] = None
         self.command[name] = "GET"
         self.send(f"GET:GET", name)
+        start_time = time.perf_counter()
         while self.data[name] is None:
+            if time.perf_counter() - start_time > self.request_time:
+                self.async_ping(name)
+                return {"error": True, "info": "Timeout"}
             pass
         return self.data[name]
 

@@ -63,6 +63,7 @@ export default {
     connect: function () {
       console.log("socket connected");
       this.isConnected = true;
+      this.update();
     },
     disconnect: function () {
       console.log("socket disconnected");
