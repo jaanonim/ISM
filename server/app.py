@@ -56,7 +56,7 @@ def on_connect(auth):
 
 
 @socketio.on("disconnect")
-def on_disconnect(auth):
+def on_disconnect():
     print("[SOCKET] client disconected")
 
 
