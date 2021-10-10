@@ -130,7 +130,10 @@ class Server:
                 raise Exception("Not responding")
         except:
             print(f"[SERVER] {name} diconnected (not responding).")
-            other.shutdown(socket.SHUT_RDWR)
+            try:
+                other.shutdown(socket.SHUT_RDWR)
+            except:
+                pass
             self.clients.pop(name)
             self.command.pop(name)
             self.data.pop(name)
