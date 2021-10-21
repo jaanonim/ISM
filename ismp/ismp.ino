@@ -195,7 +195,9 @@ String SetTimers(String s)
     valid = true;
     if (doc["podlej"])
     {
+      client.print("OK:OK");
       podlej();
+      return "";
     }
   }
   if (doc.containsKey("alarm"))

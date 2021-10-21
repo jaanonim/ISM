@@ -27,7 +27,7 @@
             "field": "Karm",
             "name": "Karmienie:",
             "type": "action",
-            "formField": "karm"
+            "action": "karm"
          },
          {
             "field": "P1",
