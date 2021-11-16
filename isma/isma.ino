@@ -155,27 +155,27 @@ String SetTimers(String s)
     valid = true;
     save = true;
   }
-  if (doc.containsKey("p1times"))
+  if (doc.containsKey("p1timeS"))
   {
-    p1timeS = (String)doc["p1times"];
+    p1timeS = (String)doc["p1timeS"];
     valid = true;
     save = true;
   }
-  if (doc.containsKey("p1timee"))
+  if (doc.containsKey("p1timeE"))
   {
-    p1timeE = (String)doc["p1timee"];
+    p1timeE = (String)doc["p1timeE"];
     valid = true;
     save = true;
   }
-  if (doc.containsKey("p2times"))
+  if (doc.containsKey("p2timeS"))
   {
-    p2timeS = (String)doc["p2times"];
+    p2timeS = (String)doc["p2timeS"];
     valid = true;
     save = true;
   }
-  if (doc.containsKey("p2timee"))
+  if (doc.containsKey("p2timeE"))
   {
-    p2timeE = (String)doc["p2timee"];
+    p2timeE = (String)doc["p2timeE"];
     valid = true;
     save = true;
   }
