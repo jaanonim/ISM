@@ -7,7 +7,7 @@
           <br />Status:
           <div class="status" :class="{ on: status, loading: loading }"></div>
           <br />
-          <button @click="getData">Sych</button>
+          <button @click="getData">sync</button>
           <p style="color: #ff0000">{{ error }}</p>
         </div>
       </div>

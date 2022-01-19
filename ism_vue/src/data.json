@@ -133,7 +133,7 @@
             "type": "object",
             "value": [{
                   "field": "loop",
-                  "name": "Polewaj co:",
+                  "name": "Podlewaj co:",
                   "type": "number",
                   "formField": "fn"
                },
