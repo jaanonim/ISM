@@ -12,26 +12,26 @@ ADC_MODE(ADC_VCC);
 
 #include "creds.h"
 
-IPAddress staticIP(192, 168, 0, 15); //ESP static ip
-IPAddress gateway(192, 168, 0, 1);   //IP Address of your WiFi Router (Gateway)
-IPAddress subnet(255, 255, 255, 0);  //Subnet mask
-IPAddress dns(8, 8, 8, 8);           //DNS
+IPAddress staticIP(192, 168, 1, 152); // ESP static ip
+IPAddress gateway(192, 168, 1, 1);    // IP Address of your WiFi Router (Gateway)
+IPAddress subnet(255, 255, 255, 0);   // Subnet mask
+IPAddress dns(8, 8, 8, 8);            // DNS
 
 WiFiClient client;
 
 WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "192.168.0.26", 3600);
+NTPClient timeClient(ntpUDP, "192.168.1.150", 3600);
 
 const uint16_t port = 2693;
-const IPAddress server(192, 168, 0, 26);
+const IPAddress server(192, 168, 1, 150);
 
 bool connectionAuthorized = false;
 
-int led = 15; //D0 D8
+int led = 15; // D0 D8
 
-int pinTem = 14;   //D5
-int alarmPin = 13; //D7
-int pompaPin = 12; //D6
+int pinTem = 14;   // D5
+int alarmPin = 13; // D7
+int pompaPin = 12; // D6
 bool isWater;
 
 float vcc;
@@ -43,14 +43,14 @@ String formattedDate;
 String dayStamp;
 String timeStamp;
 
-String rTime = "23:59"; //save
-String pTime = "00:00"; //save
-int leftDays = 0;       //save
-int len = 5;            //save
-int fn = 1;             //save
+String rTime = "23:59"; // save
+String pTime = "00:00"; // save
+int leftDays = 0;       // save
+int len = 5;            // save
+int fn = 1;             // save
 int lenA = 2;           // długość alarmu  //save
 
-bool alarmIsAble = false; //save
+bool alarmIsAble = false; // save
 bool alarm = false;
 bool pump = false;
 
@@ -312,12 +312,12 @@ struct SplitResult getSplitResult(String s)
 
 void check()
 {
-  //temperature
+  // temperature
   sensors.requestTemperatures();
   float temperaturaIn = (sensors.getTempCByIndex(inIndex));
   float temperaturaOut = (sensors.getTempCByIndex(outIndex));
 
-  //podlewanie
+  // podlewanie
   if (timeClient.getFormattedTime() > pTime + ":00" && timeClient.getFormattedTime() < pTime + ":30")
   {
     if (!isWater)
@@ -336,7 +336,7 @@ void check()
     isWater = true;
   }
 
-  //reset
+  // reset
   if (timeClient.getFormattedTime() > rTime + ":00" && timeClient.getFormattedTime() < rTime + ":30")
   {
     if (isWater || alarm)
@@ -346,7 +346,7 @@ void check()
     }
   }
 
-  //alarm
+  // alarm
   if (temperaturaOut > -100 && temperaturaIn > -100 && round(temperaturaIn) < round(temperaturaOut) && alarmIsAble)
   {
     if (!alarm)
@@ -393,7 +393,7 @@ void podlej()
 
 //------EPPROM-----------------------------------------------------
 
-//SAVE
+// SAVE
 
 void SaveAllTimes()
 {
@@ -407,7 +407,7 @@ void SaveAllTimes()
   SaveInt(len, 32);
   EEPROM.commit();
   Serial.println(LogValues());
-  //adrres conunt = 13 ; end addres = 12
+  // adrres conunt = 13 ; end addres = 12
 }
 
 void SaveLeftDays()
@@ -424,7 +424,7 @@ void SaveAlarm()
   EEPROM.commit();
 }
 
-//VOID SAVE
+// VOID SAVE
 void SaveInt(int i, int addr)
 {
   if (i > 9999 || i < 0)
@@ -481,7 +481,7 @@ void SaveTime(String s, int addr)
   EEPROM.put(addr + 3, (int)s[4]);
 }
 
-//READ
+// READ
 
 void ReadAllTimes()
 {
@@ -496,7 +496,7 @@ void ReadAllTimes()
   Serial.println(LogValues());
 }
 
-//VOID READ
+// VOID READ
 bool ReadBool(int addr)
 {
   int i = ReadInt(addr);
@@ -541,7 +541,7 @@ void setup()
 
   delay(2000);
 
-  //pins
+  // pins
   Serial.println();
   Serial.print("Pins Initialize...");
   pinMode(led, OUTPUT);
@@ -552,7 +552,7 @@ void setup()
   digitalWrite(pompaPin, 1);
   Serial.println("ok");
 
-  //WiFi
+  // WiFi
   Serial.print("WiFi Configuration...");
   digitalWrite(led, 1);
   WiFi.disconnect();
@@ -582,7 +582,7 @@ void setup()
   digitalWrite(led, 0);
   delay(100);
 
-  //WiFi Conecting
+  // WiFi Conecting
   Serial.println("Conecting:");
   while (WiFi.status() != WL_CONNECTED)
   {
@@ -594,7 +594,7 @@ void setup()
   }
   Serial.println();
   delay(100);
-  //Time server
+  // Time server
   digitalWrite(led, 1);
   Serial.print("Time server initialize...");
   timeClient.begin();
@@ -602,7 +602,7 @@ void setup()
   digitalWrite(led, 0);
   delay(100);
 
-  //EEPROM
+  // EEPROM
   digitalWrite(led, 1);
   Serial.print("EEPROM initialize...");
   EEPROM.begin(512);
@@ -610,13 +610,13 @@ void setup()
   digitalWrite(led, 0);
   delay(1000);
 
-  //Read Times
+  // Read Times
   digitalWrite(led, 1);
   ReadAllTimes();
   digitalWrite(led, 0);
   delay(100);
 
-  //IP
+  // IP
   digitalWrite(led, 1);
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());

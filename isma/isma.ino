@@ -13,27 +13,27 @@ ADC_MODE(ADC_VCC);
 
 #include "creds.h" //connection credentials
 
-IPAddress staticIP(192, 168, 0, 11); //ESP static ip
-IPAddress gateway(192, 168, 0, 1);   //IP Address of your WiFi Router (Gateway)
-IPAddress subnet(255, 255, 255, 0);  //Subnet mask
-IPAddress dns(8, 8, 8, 8);           //DNS
+IPAddress staticIP(192, 168, 1, 151); // ESP static ip
+IPAddress gateway(192, 168, 1, 1);    // IP Address of your WiFi Router (Gateway)
+IPAddress subnet(255, 255, 255, 0);   // Subnet mask
+IPAddress dns(8, 8, 8, 8);            // DNS
 
 WiFiClient client;
 
 WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "192.168.0.26", 3600);
+NTPClient timeClient(ntpUDP, "192.168.1.150", 3600);
 
 const uint16_t port = 2693;
-const IPAddress server(192, 168, 0, 26);
+const IPAddress server(192, 168, 1, 150);
 
 bool connectionAuthorized = false;
 
-int led = 16; //D0
+int led = 16; // D0
 
-int p1 = 14;     //D5
-int p2 = 12;     //D6
-int karmPin = 5; //D1
-int pinTem = 4;  //D2
+int p1 = 14;     // D5
+int p2 = 12;     // D6
+int karmPin = 5; // D1
+int pinTem = 4;  // D2
 
 bool isKarm;
 float vcc;
@@ -376,7 +376,7 @@ void SaveAllTimes()
   SaveTime(ktime, 16);
   EEPROM.commit();
   Serial.println(LogValues());
-  //adrres conunt = 20 ; end addres = 19
+  // adrres conunt = 20 ; end addres = 19
 }
 
 void SaveTime(String s, int addr)
@@ -422,7 +422,7 @@ void setup()
 
   delay(2000);
 
-  //pins
+  // pins
   Serial.println();
   Serial.print("Pins Initialize...");
   pinMode(led, OUTPUT);
@@ -434,7 +434,7 @@ void setup()
   digitalWrite(p2, 1);
   Serial.println("ok");
 
-  //servo
+  // servo
   Serial.print("Servo Initialize...");
   digitalWrite(led, 0);
   myservo.attach(karmPin);
@@ -445,7 +445,7 @@ void setup()
   digitalWrite(led, 1);
   delay(100);
 
-  //WiFi
+  // WiFi
   Serial.print("WiFi Configuration...");
   digitalWrite(led, 1);
   WiFi.disconnect();
@@ -475,7 +475,7 @@ void setup()
   digitalWrite(led, 1);
   delay(100);
 
-  //WiFi Conecting
+  // WiFi Conecting
   Serial.println("Conecting:");
   while (WiFi.status() != WL_CONNECTED)
   {
@@ -488,7 +488,7 @@ void setup()
   Serial.println();
   delay(100);
 
-  //Time server
+  // Time server
   digitalWrite(led, 0);
   Serial.print("Time server initialize...");
   timeClient.begin();
@@ -496,7 +496,7 @@ void setup()
   digitalWrite(led, 1);
   delay(100);
 
-  //EEPROM
+  // EEPROM
   digitalWrite(led, 0);
   Serial.print("EEPROM initialize...");
   EEPROM.begin(24);
@@ -504,13 +504,13 @@ void setup()
   digitalWrite(led, 1);
   delay(100);
 
-  //Read Times
+  // Read Times
   digitalWrite(led, 0);
   ReadAllTimes();
   digitalWrite(led, 1);
   delay(100);
 
-  //IP
+  // IP
   digitalWrite(led, 0);
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
