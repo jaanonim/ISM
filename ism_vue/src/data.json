@@ -183,7 +183,7 @@
             "field": "Muzyka",
             "name": "Muzyka:",
             "type": "redirection",
-            "addres": "http://192.168.0.26:6680/iris/"
+            "addres": "http://192.168.1.150:6680/iris/"
          }
       ]
    }
