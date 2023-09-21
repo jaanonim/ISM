@@ -1,20 +1,26 @@
 import datetime
+import os
 
-from flask import Flask, abort, request
+from dotenv import load_dotenv
+from flask import Flask
 from flask_cors import CORS
-from flask_jwt import JWT, _jwt, current_identity, jwt_required
-from flask_socketio import SocketIO, disconnect, emit
-from gpiozero import CPUTemperature
+from flask_jwt import JWT, _jwt
+from flask_socketio import SocketIO, emit
+from user import User
+from wakeonlan import send_magic_packet
 from werkzeug.security import safe_str_cmp
 
-from data import Data
 from server import Server
 
-username_table = {u.username: u for u in Data.users}
-userid_table = {u.id: u for u in Data.users}
+load_dotenv() 
+
+USERS = [User(1,os.getenv("USER_NAME"), os.getenv('USER_PASSWORD') )]
+username_table = {u.username: u for u in USERS}
+userid_table = {u.id: u for u in USERS}
 
 
 def authenticate(username, password):
+    print(username,password,USERS[0])
     user = username_table.get(username, None)
     if user and safe_str_cmp(user.password.encode("utf-8"), password.encode("utf-8")):
         return user
@@ -30,23 +36,27 @@ def callback(name, data):
         emit(name, data, namespace="/", broadcast=True)
 
 
-app = Flask(__name__)
+app = Flask(__name__,static_url_path='', 
+            static_folder='../client/dist')
 CORS(app)
-app.config["SECRET_KEY"] = Data.secretKey
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 app.config["SERVER"] = Server.getInstance(callback)
 app.config["JWT_EXPIRATION_DELTA"] = datetime.timedelta(days=7)
 jwt = JWT(app, authenticate, identity)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
+@app.route('/')
+def static_file():
+    return app.send_static_file("index.html")
 
 @socketio.on("connect")
 def on_connect(auth):
     print("[SOCKET] client connected")
-    token = auth.get("token")
     try:
+        token = auth.get("token")
         if token is None:
             raise
-        payload = _jwt.jwt_decode_callback(token)
+        _jwt.jwt_decode_callback(token)
     except:
         emit("dis")
         print("[SOCKET] client disconected (wrong token)")
@@ -74,6 +84,27 @@ def _set(json):
                 "payload": {"error": "Invalid json (the name is missing)"},
             },
         )
+        return
+
+
+    if name == "ISM":
+        try:
+            payload = json["payload"]
+            if payload["naswol"] == True:
+                send_magic_packet(os.getenv("NAS_MAC"))
+                emit_with_log("set", {"name": name, "payload": None})
+            else:
+                raise
+
+        except:
+            emit_with_log(
+                "set",
+                {
+                    "name": name,
+                    "payload": {"error": "Invalid json (something is wrong with payload)"},
+                },
+            )
+            return
         return
 
     try:
@@ -116,10 +147,13 @@ def _get(json):
         )
         return
 
-    if name == "GAPI":
+    if name == "ISM":
         emit_with_log(
             "get",
-            {"name": name, "payload": {"data": {"temp": CPUTemperature().temperature}}},
+            {
+                "name": name,
+                "payload": {},
+            },
         )
         return
 
@@ -140,5 +174,6 @@ def emit_with_log(name, data):
 
 
 if __name__ == "__main__":
-    print("[SOCKET] starting socektio server")
-    socketio.run(app, host=Data.addres, port=5000)
+    port = int(os.getenv("PORT",5000))
+    print(f"[SOCKET] starting socektio server on {port}")
+    socketio.run(app, host=os.getenv("HOST","0.0.0.0"), port=port)

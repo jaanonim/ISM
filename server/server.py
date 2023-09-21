@@ -1,10 +1,9 @@
 import json
+import os
 import socket
 import sys
 import threading
 import time
-
-from data import Data
 
 
 class Server:
@@ -26,16 +25,16 @@ class Server:
         self.callback = callback
         self.clients = {}
         self.size = 2048
-        self.port = 2693
+        self.port = os.getenv("PORT_SOCKET",2693)
         self.request_time = 10
         self.timeout = 5
-        self.addres = Data.addres
+        self.addres = os.getenv("HOST","0.0.0.0")
         self.command = {}
         self.data = {}
 
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            self.server.bind((self.addres, self.port))
+            self.server.bind((self.addres, int(self.port)))
         except Exception as e:
             print(f"[SERVER] Error: {e}")
             exit()

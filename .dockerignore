@@ -1,0 +1,7 @@
+__pycache__
+.env
+.vscode
+env
+node_modules
+dist
+.gitignore

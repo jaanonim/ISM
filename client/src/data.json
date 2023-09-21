@@ -1,0 +1,109 @@
+[
+   {
+      "title": "I.S.M.P.",
+      "color": "#33ff55",
+      "addres": "ISMP",
+      "value": [
+         {
+            "field": "Time",
+            "name": "Czas:",
+            "type": "string"
+         },
+         {
+            "field": "Voltage",
+            "name": "Napięcie:",
+            "type": "vcc"
+         },
+         {
+            "field": "Temp_in",
+            "name": "Temperatura wewnątrz:",
+            "type": "temp"
+         },
+         {
+            "field": "Temp_out",
+            "name": "Temperatura na zewnątrz:",
+            "type": "temp"
+         },
+         {
+            "field": "Reset",
+            "name": "Godzina Resetu:",
+            "type": "hour",
+            "formField": "rtime"
+         },
+         {
+            "field": "Alarm",
+            "name": "Alarm:",
+            "type": "object",
+            "value": [
+               {
+                  "field": "time",
+                  "name": "Czas trwania alarmu:",
+                  "type": "number",
+                  "formField": "lena"
+               },
+               {
+                  "field": "status",
+                  "name": "Status:",
+                  "type": "bool",
+                  "action": "alarm"
+               }
+            ]
+         },
+         {
+            "field": "Polewanie",
+            "name": "Podlewanie:",
+            "type": "object",
+            "value": [
+               {
+                  "field": "loop",
+                  "name": "Podlewaj co:",
+                  "type": "number",
+                  "formField": "fn"
+               },
+               {
+                  "field": "left",
+                  "name": "Pozostało:",
+                  "type": "number"
+               },
+               {
+                  "field": "hour",
+                  "name": "Godzina podlewania:",
+                  "type": "hour",
+                  "formField": "ptime"
+               },
+               {
+                  "field": "time",
+                  "name": "Czas podlewania:",
+                  "type": "number",
+                  "formField": "len"
+               },
+               {
+                  "field": "status",
+                  "name": "Status:",
+                  "type": "bool",
+                  "action": "woda"
+               },
+               {
+                  "field": "Podlej",
+                  "name": "Podlewanie:",
+                  "type": "action",
+                  "action": "podlej"
+               }
+            ]
+         }
+      ]
+   },
+   {
+      "title": "I.S.M.",
+      "color": "#ffffff",
+      "addres": "ISM",
+      "value": [
+         {
+            "field": "Start",
+            "name": "Start NAS:",
+            "type": "action",
+            "action": "naswol"
+         }
+      ]
+   }
+]
