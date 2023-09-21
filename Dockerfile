@@ -1,4 +1,4 @@
-FROM node:18 as build-step
+FROM node:18-alpine as build-step
 
 RUN npm install -g pnpm
 
@@ -12,7 +12,7 @@ RUN pnpm install
 ADD ./client ./
 RUN pnpm build
 
-FROM python:3.10
+FROM python:3.10-alpine
 WORKDIR /app
 RUN mkdir ./client
 RUN mkdir ./server
