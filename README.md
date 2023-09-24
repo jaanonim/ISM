@@ -11,6 +11,6 @@ My smart home project that base on Rasberry pi zero (as central point) and Esp82
 
 ## Docker
 
-    jaanonim/ism
+    docker buildx build --platform linux/amd64,linux/arm -t jaanonim/ism . --push
 
 Set `network_mode: host` for Wake on Lan to work.

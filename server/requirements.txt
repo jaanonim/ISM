@@ -7,7 +7,6 @@ Flask-JWT==0.3.2
 Flask-SocketIO==5.3.6
 gevent==23.9.1
 gevent-websocket==0.10.1
-gpiozero==1.6.2
 greenlet==2.0.2
 h11==0.14.0
 itsdangerous==2.1.2

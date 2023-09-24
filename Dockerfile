@@ -14,6 +14,7 @@ RUN pnpm build
 
 FROM python:3.10-alpine
 WORKDIR /app
+RUN apk add build-base
 RUN mkdir ./client
 RUN mkdir ./server
 
@@ -21,8 +22,8 @@ WORKDIR /app/server
 COPY --from=build-step /app/client/dist /app/client/dist
 
 COPY server/requirements.txt ./
-RUN pip install --no-dependencies -r requirements.txt 
+RUN pip install --no-dependencies --no-build -r requirements.txt 
 ADD ./server ./
 
 EXPOSE 5000 2693
-CMD ["python3", "app.py"]
+CMD ["python3","-u", "app.py"]
