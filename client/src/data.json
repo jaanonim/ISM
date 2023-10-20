@@ -99,10 +99,46 @@
       "addres": "ISM",
       "value": [
          {
-            "field": "Start",
-            "name": "Start NAS:",
+            "field": "Start NAS",
+            "name": "",
             "type": "action",
             "action": "naswol"
+         },
+         {
+            "field": "PiHole",
+            "name": "",
+            "type": "redirection",
+            "addres": "http://pihole.pi.hole/"
+         },
+         {
+            "field": "Portainer",
+            "name": "",
+            "type": "redirection",
+            "addres": "http://portainer.pi.hole/"
+         },
+         {
+            "field": "Grafana",
+            "name": "",
+            "type": "redirection",
+            "addres": "http://grafana.pi.hole/"
+         },
+         {
+            "field": "NAS",
+            "name": "",
+            "type": "redirection",
+            "addres": "http://nas.pi.hole/"
+         },
+         {
+            "field": "UrBackup",
+            "name": "",
+            "type": "redirection",
+            "addres": "http://urbackup.nas.pi.hole/"
+         },
+         {
+            "field": "Prism",
+            "name": "",
+            "type": "redirection",
+            "addres": "http://prism.nas.pi.hole/"
          }
       ]
    }
