@@ -139,6 +139,12 @@
             "name": "",
             "type": "redirection",
             "addres": "http://prism.nas.pi.hole/"
+         },
+         {
+            "field": "MeTube",
+            "name": "",
+            "type": "redirection",
+            "addres": "http://metube.nas.pi.hole/"
          }
       ]
    }
