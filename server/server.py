@@ -178,9 +178,12 @@ class Server:
         return True
 
     def send(self, msg, name):
-        c = self.clients.get(name)
-        message = msg.encode()
-        c.send(message)
+        try:
+            c = self.clients.get(name)
+            message = msg.encode()
+            c.send(message)
+        except Exception as e:
+            print(f"[SERVER] Error: {e}")
 
     def run(self):
         self.server.listen()

@@ -14,13 +14,13 @@ from server import Server
 
 load_dotenv() 
 
+VERSION = "1.0.1"
 USERS = [User(1,os.getenv("USER_NAME"), os.getenv('USER_PASSWORD') )]
 username_table = {u.username: u for u in USERS}
 userid_table = {u.id: u for u in USERS}
 
 
 def authenticate(username, password):
-    print(username,password,USERS[0])
     user = username_table.get(username, None)
     if user and safe_str_cmp(user.password.encode("utf-8"), password.encode("utf-8")):
         return user
@@ -174,6 +174,7 @@ def emit_with_log(name, data):
 
 
 if __name__ == "__main__":
+    print(f"[VERSION] {VERSION}")
     port = int(os.getenv("PORT",5000))
     print(f"[SOCKET] starting socektio server on {port}")
     socketio.run(app, host=os.getenv("HOST","0.0.0.0"), port=port)
